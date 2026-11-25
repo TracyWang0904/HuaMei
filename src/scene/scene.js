@@ -19,7 +19,7 @@ export const isUnlocked = (placeId) => {
 // 地图：按楼层列出地点，未解锁的显示“？？？”
 export function mapView(onEnter) {
   const cur = S.get().currentPlace;
-  return h('div', { class: 'map' }, h('h2', {}, t('map.title')),
+  return h('div', { class: 'map' },
     gameMap.floors.map((f) => h('section', {},
       h('h3', {}, f.name),
       h('div', { class: 'places' }, f.places.map((p) => {
@@ -31,18 +31,16 @@ export function mapView(onEnter) {
       })))));
 }
 
-// 场景：一张场景图（SVG 里标了 id 的物件可点）+ 描述 + 物品列表（备用入口）
+// 场景：满屏的场景图（SVG 里标了 id 的物件可点）。没有图的地点先用占位 + 按钮。
 export function sceneView(placeId, rerender) {
   const place = places[placeId];
-  const art = buildArt(place, rerender);
-  const buttons = place.hotspots.map((hs) => hotspotButton(place, hs, rerender));
-  return h('div', { class: 'scene' },
-    h('h2', {}, place.name),
-    art ?? h('div', { class: 'scene-img' }, t('scene.placeholder', { name: place.name })),
-    h('div', { class: 'paper' }, richText(place.intro, { source: place.name })),
-    art
-      ? h('details', { class: 'items' }, h('summary', {}, t('scene.items')), h('div', { class: 'hotspots' }, buttons))
-      : h('div', { class: 'hotspots' }, buttons));
+  return buildArt(place, rerender) ?? placeholder(place, rerender);
+}
+
+function placeholder(place, rerender) {
+  return h('div', { class: 'scene-art placeholder' },
+    h('p', {}, t('scene.placeholder', { name: place.name })),
+    h('div', { class: 'hotspots' }, place.hotspots.map((hs) => hotspotButton(place, hs, rerender))));
 }
 
 function buildArt(place, rerender) {

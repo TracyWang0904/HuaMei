@@ -18,5 +18,5 @@ export function openSavePanel(onChanged) {
       } }, t('save.clear'))),
     box, msg,
   ];
-  openModal({ title: t('nav.save'), body });
+  openModal({ title: t('nav.settings'), body });
 }

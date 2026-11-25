@@ -2,7 +2,6 @@
   "app.title": "画眉",
   "nav.map": "地图",
   "nav.notebook": "笔记本",
-  "nav.save": "存档",
   "save.export": "导出存档",
   "save.import": "导入存档",
   "save.import.prompt": "把导出的存档文本粘贴到这里",
@@ -33,5 +32,5 @@
   "puzzle.wrong": "密码错误",
   "puzzle.solved": "已通过",
   "puzzle.pwHint": "密码提示：{hint}",
-  "scene.items": "物品列表"
+  "nav.settings": "设置"
 }
