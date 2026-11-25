@@ -6,11 +6,17 @@ const VERSION = 1;
 export function defaultSave() {
   return {
     version: VERSION,
+    contentAck: false,
+    startedAt: null,   // 开始游戏的真实时间戳，用来推算“现在”
+    currentPlace: null,
     unlockedPlaces: [],
+    solved: [],        // 已解开的谜题 id
+    hintLevels: {},    // { 谜题id: 已看到的提示级数 }
+    flags: [],
     loggedIn: [],
     readDocs: [],
-    notebook: {},   // { 词: [出处, ...] }
-    items: [],
+    notebook: {},      // { 词: [出处, ...] }
+    items: [],         // [{ id, name }]
     endings: [],
   };
 }

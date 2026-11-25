@@ -1,6 +1,66 @@
-/* A0 占位样式，CRT 与纸张质感在 B1 阶段做 */
-:root { color-scheme: dark; }
-html, body { margin: 0; height: 100%; background: #0b0f14; color: #b8c7d6; font-family: ui-monospace, Menlo, Consolas, monospace; }
-#app { padding: 24px; max-width: 720px; margin: 0 auto; }
-button { font: inherit; color: inherit; background: #16202b; border: 1px solid #2c3d4f; padding: 6px 12px; cursor: pointer; }
-textarea { width: 100%; box-sizing: border-box; min-height: 6em; background: #0f1620; color: inherit; border: 1px solid #2c3d4f; font: inherit; }
+/* A1 线框样式：只保证能用、能读。CRT 与纸张质感在 B1 阶段做 */
+:root { color-scheme: dark; --bg:#0b0f14; --fg:#b8c7d6; --line:#2c3d4f; --panel:#111a24; --accent:#6fb3d9; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); font: 15px/1.7 ui-monospace, Menlo, Consolas, "PingFang SC", "Noto Sans CJK SC", monospace; }
+button, input, textarea { font: inherit; color: inherit; background: #16202b; border: 1px solid var(--line); padding: 6px 12px; }
+button { cursor: pointer; }
+button:disabled { opacity: .4; cursor: default; }
+input { width: 100%; }
+textarea { width: 100%; min-height: 6em; }
+h2, h3 { margin: .6em 0 .3em; font-weight: normal; }
+.sp { flex: 1; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+.topbar, .ws-bar { display: flex; gap: 8px; align-items: center; padding: 8px 16px; border-bottom: 1px solid var(--line); background: var(--panel); }
+#app > main { padding: 16px; max-width: 760px; margin: 0 auto; }
+
+.paper { white-space: pre-wrap; background: #1b1a16; color: #d8d2bf; border: 1px solid #3a372c; padding: 12px 14px; margin: 8px 0; }
+.paper.mirror { transform: scaleX(-1); }
+.rich { display: inline; }
+.word { background: none; border: 0; border-bottom: 1px dashed var(--accent); padding: 0; color: #8fd0f5; }
+.word.collected { border-bottom-style: solid; color: #d8d2bf; opacity: .75; }
+
+.scene-img { height: 160px; display: grid; place-items: center; border: 1px dashed var(--line); margin: 8px 0; opacity: .6; }
+.hotspots, .places { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+.hotspot.done { opacity: .6; }
+.places .here { border-color: var(--accent); }
+
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.65); display: grid; place-items: center; z-index: 100; padding: 12px; }
+.modal { background: var(--panel); border: 1px solid var(--line); width: min(560px, 100%); max-height: 90vh; display: flex; flex-direction: column; }
+.modal > header { display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; border-bottom: 1px solid var(--line); }
+.modal > header h2 { margin: 0; font-size: 1em; }
+.modal-body { padding: 12px; overflow: auto; }
+.nb ul { padding-left: 1.2em; margin: 4px 0; }
+.empty, .msg { opacity: .7; }
+.hint { color: #d9b86f; margin: 4px 0; }
+.ok { color: #7fd99a; }
+.puzzle label { display: block; margin: 8px 0; }
+.puzzle label span { display: block; opacity: .8; }
+
+.ws { position: fixed; inset: 0; z-index: 50; background: #0d1a24; display: flex; flex-direction: column; }
+.login { max-width: 420px; margin: 8vh auto; padding: 16px; width: 100%; }
+.desktop { position: relative; flex: 1; overflow: hidden; }
+.icons { position: absolute; top: 12px; left: 12px; display: grid; gap: 10px; }
+.icon { display: flex; flex-direction: column; align-items: center; width: 92px; background: none; border: 0; font-size: .85em; }
+.glyph { font-size: 28px; }
+.windows { position: absolute; inset: 0; pointer-events: none; }
+.win { position: absolute; width: min(520px, 90%); max-height: 80%; pointer-events: auto; display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--accent); }
+.win-bar { display: flex; justify-content: space-between; align-items: center; padding: 2px 8px; background: #1d3347; cursor: move; touch-action: none; }
+.win-body { display: flex; overflow: auto; }
+.entry-list { list-style: none; margin: 0; padding: 4px; min-width: 130px; border-right: 1px solid var(--line); }
+.entry-list button { width: 100%; text-align: left; margin-bottom: 4px; }
+.entry { padding: 8px 12px; flex: 1; min-width: 0; }
+.taskbar { position: absolute; left: 0; right: 0; bottom: 0; padding: 4px 8px; background: var(--panel); border-top: 1px solid var(--line); z-index: 9999; }
+.start-menu { position: absolute; bottom: 100%; left: 8px; margin: 0; padding: 4px; list-style: none; background: var(--panel); border: 1px solid var(--line); min-width: 180px; }
+.start-menu[hidden] { display: none; }
+.start-menu button { width: 100%; text-align: left; border: 0; }
+
+/* 手机：桌面窗口改为全屏层叠，不用拖动 */
+@media (max-width: 700px) {
+  .win { left: 0 !important; top: 0 !important; width: 100%; height: calc(100% - 44px); max-height: none; }
+  .win-body { flex-direction: column; flex: 1; }
+  .entry-list { border-right: 0; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4px; }
+  .entry-list button { width: auto; }
+  .login { margin-top: 4vh; }
+}
+.topbar button, .ws-bar button { white-space: nowrap; }
+.ws-bar strong { font-size: .9em; }

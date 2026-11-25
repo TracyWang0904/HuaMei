@@ -1,21 +1,42 @@
+import { h } from './ui/dom.js';
 import { t } from './core/i18n.js';
-import { load, clear, exportSave, importSave } from './core/storage.js';
+import * as S from './core/state.js';
+import { gameMap } from './core/data.js';
+import { mapView, sceneView, isUnlocked } from './scene/scene.js';
+import { openNotebook } from './notebook/notebook-ui.js';
+import { openSavePanel } from './ui/save-panel.js';
+import { ensureContentAck } from './ui/content-warning.js';
 
-// A0 空壳：只验证存档导出/导入链路，游戏界面在 A1 做
 const app = document.getElementById('app');
 document.title = t('app.title');
-app.innerHTML = `
-  <h1>${t('app.title')}</h1>
-  <p><button id="exp">${t('save.export')}</button>
-     <button id="imp">${t('save.import')}</button>
-     <button id="clr">${t('save.clear')}</button></p>
-  <textarea id="box" placeholder="${t('save.import.prompt')}"></textarea>
-  <p id="msg"></p>`;
-const box = app.querySelector('#box');
-const msg = app.querySelector('#msg');
-app.querySelector('#exp').onclick = () => { box.value = exportSave(load()); box.select(); };
-app.querySelector('#imp').onclick = () => {
-  try { importSave(box.value); msg.textContent = t('save.import.ok'); }
-  catch { msg.textContent = t('save.import.fail'); }
-};
-app.querySelector('#clr').onclick = () => { if (confirm(t('save.clear.confirm'))) { clear(); msg.textContent = ''; } };
+
+const main = h('main', {});
+let mode = 'scene'; // 'scene' | 'map'
+
+function currentPlace() {
+  const cur = S.get().currentPlace;
+  if (cur && isUnlocked(cur)) return cur;
+  return gameMap.floors.flatMap((f) => f.places).find((p) => p.initial).id;
+}
+
+function render() {
+  if (mode === 'map') {
+    main.replaceChildren(mapView((id) => { S.update((s) => { s.currentPlace = id; }); mode = 'scene'; render(); }));
+  } else {
+    main.replaceChildren(sceneView(currentPlace(), render));
+  }
+}
+
+app.append(
+  h('header', { class: 'topbar' },
+    h('strong', {}, t('app.title')),
+    h('span', { class: 'sp' }),
+    h('button', { type: 'button', onclick: () => { mode = mode === 'map' ? 'scene' : 'map'; render(); } }, t('nav.map')),
+    h('button', { type: 'button', onclick: openNotebook }, t('nav.notebook')),
+    h('button', { type: 'button', onclick: () => openSavePanel(() => { mode = 'scene'; render(); }) }, t('nav.save'))),
+  main);
+
+ensureContentAck(() => {
+  if (!S.get().startedAt) S.update((s) => { s.startedAt = Date.now(); });
+  render();
+});
