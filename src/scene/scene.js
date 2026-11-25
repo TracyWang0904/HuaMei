@@ -7,6 +7,7 @@ import { openModal } from '../ui/modal.js';
 import { puzzlePanel } from '../puzzle/puzzle-panel.js';
 import { openWorkstation } from '../workstation/workstation.js';
 import { startClock } from './clock-display.js';
+import { startFlicker } from './flicker.js';
 
 // 场景图：assets/img/scenes/<scene>.svg，构建时作为文本打包
 // 不急切加载：有的场景图很大（内嵌底图），进入该场景时才加载
@@ -73,6 +74,7 @@ function fillArt(wrap, raw, place, rerender) {
     if (el && S.get().solved.includes(st.showWhenSolved)) el.style.display = '';
   }
   startClock(svg);
+  if (place.flicker) startFlicker(svg);
 }
 
 const isDone = (hs) => hs.type === 'puzzle' && S.get().solved.includes(hs.puzzle.id);
