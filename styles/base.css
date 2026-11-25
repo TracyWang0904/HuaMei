@@ -5,8 +5,8 @@
   font-display: block;
 }
 :root {
-  --face: #c0c0c0; --hi: #fff; --lt: #dfdfdf; --sh: #808080; --dk: #0a0a0a;
-  --navy: #000080; --teal: #008080;
+  --face: #c0c0c0; --hi: #fff; --lt: #e6e6e6; --sh: #8c8c8c; --dk: #353535;
+  --navy: #2c2cb9; --teal: #00918f;
   /* 像素字体：方舟像素字体 12px，见 LICENSES.md */
   --font: "Ark Pixel", "Fusion Pixel", "Zpix", ui-monospace, Menlo, Consolas, monospace;
   --raised: inset -1px -1px var(--dk), inset 1px 1px var(--hi), inset -2px -2px var(--sh), inset 2px 2px var(--lt);
@@ -21,7 +21,7 @@ html, body { margin: 0; height: 100%; background: #05080b; color: #000; font: 16
 .ico { display: inline-block; flex: none; image-rendering: pixelated; }
 
 /* —— 按钮 / 输入框 —— */
-.btn, button.btn { font: inherit; color: #000; background: var(--face); border: 0; box-shadow: var(--raised); padding: 3px 14px; min-width: 64px; min-height: 24px; cursor: default; }
+.btn, button.btn { font: inherit; color: #000; background: var(--face); border: 0; box-shadow: var(--raised); padding: 3px 14px; min-width: 64px; min-height: 24px; }
 .btn:active:not(:disabled) { box-shadow: var(--pressed); padding: 4px 13px 2px 15px; }
 .btn:focus-visible { outline: 1px dotted #000; outline-offset: -5px; }
 .btn.default { box-shadow: var(--raised), 0 0 0 1px #000; }
@@ -34,7 +34,7 @@ input:focus, textarea:focus { outline: none; }
 
 /* —— 窗口 —— */
 .win98 { background: var(--face); box-shadow: var(--window); padding: 3px; color: #000; }
-.titlebar { display: flex; align-items: center; gap: 4px; height: 20px; padding: 2px 3px; background: var(--navy); color: #fff; font-weight: bold; user-select: none; cursor: default; }
+.titlebar { display: flex; align-items: center; gap: 4px; height: 20px; padding: 2px 3px; background: var(--navy); color: #fff; font-weight: bold; user-select: none; }
 .titlebar .title { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .tb-btn { width: 18px; height: 16px; padding: 0; font: bold 14px/12px var(--font); color: #000; background: var(--face); border: 0; box-shadow: var(--raised); }
 .tb-btn:active { box-shadow: var(--pressed); }
@@ -95,11 +95,11 @@ input:focus, textarea:focus { outline: none; }
 .ws { position: fixed; inset: 0; margin: auto; z-index: 50; width: min(940px, calc(100% - 32px)); height: min(620px, calc(100% - 32px)); display: flex; flex-direction: column; }
 .ws-body { flex: 1; min-height: 0; margin-top: 3px; display: flex; flex-direction: column; }
 .desktop-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; }
-.desktop { position: relative; flex: 1; min-height: 0; overflow: hidden; background: var(--teal); box-shadow: var(--field); }
+.desktop { position: relative; flex: 1; min-height: 0; overflow: hidden; background: var(--teal) url("/assets/img/wallpaper-bliss.jpg") center / cover no-repeat; box-shadow: var(--field); }
 .center-fill { position: absolute; inset: 0; display: grid; place-items: center; }
 .login-dlg { width: min(420px, calc(100% - 24px)); }
 .icons { position: absolute; top: 10px; left: 10px; display: flex; flex-direction: column; flex-wrap: wrap; gap: 10px; max-height: calc(100% - 20px); }
-.dicon { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 88px; background: none; border: 0; padding: 2px; font: inherit; color: #fff; cursor: default; }
+.dicon { text-shadow: 1px 1px 0 #000; display: flex; flex-direction: column; align-items: center; gap: 4px; width: 88px; background: none; border: 0; padding: 2px; font: inherit; color: #fff; }
 .dicon span:last-child { padding: 0 2px; line-height: 1.2; }
 .dicon:focus-visible span:last-child, .dicon:active span:last-child { background: var(--navy); outline: 1px dotted #ff0; }
 .windows { position: absolute; inset: 0; pointer-events: none; }
@@ -107,7 +107,7 @@ input:focus, textarea:focus { outline: none; }
 .appwin .titlebar { gap: 6px; }
 .appwin-body { display: flex; flex: 1; min-height: 120px; min-width: 0; margin-top: 3px; background: #fff; box-shadow: var(--field); overflow: hidden; }
 .entry-list { flex: none; width: 150px; overflow: auto; border-right: 1px solid var(--sh); padding: 2px; }
-.entry-list button { display: block; width: 100%; text-align: left; font: inherit; color: #000; background: none; border: 0; padding: 2px 4px; cursor: default; }
+.entry-list button { display: block; width: 100%; text-align: left; font: inherit; color: #000; background: none; border: 0; padding: 2px 4px; }
 .entry-list button.sel { background: var(--navy); color: #fff; }
 .entry { flex: 1; min-width: 0; overflow: auto; padding: 8px 10px; white-space: pre-wrap; background: #fff; color: #000; }
 .entry h3 { margin: 0 0 6px; font-size: 1em; }
@@ -120,5 +120,10 @@ input:focus, textarea:focus { outline: none; }
 .start-menu .banner span { writing-mode: vertical-rl; transform: rotate(180deg); letter-spacing: 2px; }
 .start-menu ul { list-style: none; margin: 0; padding: 0; flex: 1; }
 .start-menu li.sep { height: 2px; margin: 3px 2px; box-shadow: inset 0 1px var(--sh), inset 0 -1px var(--hi); }
-.start-menu li button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 4px 12px 4px 8px; font: inherit; color: #000; background: none; border: 0; text-align: left; cursor: default; }
+.start-menu li button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 4px 12px 4px 8px; font: inherit; color: #000; background: none; border: 0; text-align: left; }
 .start-menu li button:hover, .start-menu li button:focus-visible { background: var(--navy); color: #fff; outline: none; }
+
+/* —— 鼠标：千禧年像素光标。热点在箭头尖 / 手指尖 —— */
+html, body, #app, .stage, .modal-overlay, .win98, .btn, input, textarea, .titlebar, .scene-art, .scene-art svg { cursor: url("/assets/img/ui/cursor-arrow.png") 0 0, default; }
+button, .word, .dicon, .tb-btn, .entry-list button, .start-menu li button, label, .scene-art .hs, .scene-art .hs * { cursor: url("/assets/img/ui/cursor-hand.png") 9 0, pointer; }
+input[type=text], textarea { cursor: text; }

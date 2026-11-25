@@ -1,4 +1,15 @@
-// 千禧年风格的小图标（16×16 格子，放大到 32px，边缘不做抗锯齿）
+// 千禧年风格的图标。电脑、文件夹、文档、钥匙、勾、叹号、红叉来自项目负责人提供的矢量素材（见 LICENSES.md），其余是自绘的 16×16 小图标
+import computerPng from '/assets/img/ui/computer.png';
+import folderPng from '/assets/img/ui/folder.png';
+import documentsPng from '/assets/img/ui/documents.png';
+import textfilePng from '/assets/img/ui/textfile.png';
+import keyPng from '/assets/img/ui/key.png';
+import checkPng from '/assets/img/ui/check.png';
+import warningPng from '/assets/img/ui/warning.png';
+import errorPng from '/assets/img/ui/error.png';
+
+const PNG = { computer: computerPng, folder: folderPng, documents: documentsPng, doc: textfilePng, key: keyPng, check: checkPng, warning: warningPng, error: errorPng, info: checkPng };
+
 const S = {
   doc: '<path d="M3.5 1.5h7l3 3v10h-10z" fill="#fff" stroke="#000"/><path d="M10.5 1.5v3h3" fill="#c0c0c0" stroke="#000"/><path d="M5 7.5h6M5 9.5h6M5 11.5h4" stroke="#000080"/>',
   folder: '<path d="M1.5 4.5h5l1 1.5h7v8h-13z" fill="#ffff80" stroke="#000"/><path d="M2 7.5h12" stroke="#fff"/>',
@@ -21,6 +32,12 @@ export const appIcon = (app) => app.icon ?? BY_APP[app.id] ?? 'doc';
 
 export function icon(name, size = 32) {
   const el = document.createElement('span');
+  if (PNG[name]) {
+    el.className = 'ico';
+    el.style.cssText = `width:${size}px;height:${size}px;display:inline-flex;align-items:center;justify-content:center`;
+    el.innerHTML = `<img src="${PNG[name]}" alt="" draggable="false" style="max-width:${size}px;max-height:${size}px;display:block">`;
+    return el;
+  }
   el.className = 'ico';
   el.style.width = el.style.height = `${size}px`;
   el.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="${size}" height="${size}" shape-rendering="crispEdges" fill="none">${S[name] ?? S.doc}</svg>`;
