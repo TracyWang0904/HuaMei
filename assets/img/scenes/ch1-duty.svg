@@ -1,0 +1,364 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="display:block;width:100vw;height:100vh;background:#0b0e11" font-family="'Source Han Sans SC','Noto Sans CJK SC','Noto Sans CJK TC','PingFang SC',sans-serif">
+  <!-- 《画眉》第一章 · 值班室
+       可点击物件都在带 id="hs-…" 的分组里，供游戏做点击区域。
+       电子钟：七段数码管。每个段是 id="clk-{位}-{a~g}"（位 0~3 对应 HH:MM），日期是 "date-{位}-{a~g}"（MM/DD）；
+       游戏用 JS 按游玩时间显示/隐藏各段即可（见下方 setClock 函数）。
+       下方 <script> 只用于单独打开本文件时预览：从 23:54 开始按真实时间走。 -->
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#36414c"/><stop offset="1" stop-color="#242d36"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#21272d"/><stop offset="1" stop-color="#111417"/>
+    </linearGradient>
+    <linearGradient id="deskTop" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4f4032"/><stop offset="1" stop-color="#3c3026"/>
+    </linearGradient>
+    <linearGradient id="deskFront" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#34291f"/><stop offset="1" stop-color="#231b15"/>
+    </linearGradient>
+    <linearGradient id="crt" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b9b29a"/><stop offset="1" stop-color="#8a836f"/>
+    </linearGradient>
+    <radialGradient id="screenGlow" cx="0.5" cy="0.5" r="0.6">
+      <stop offset="0" stop-color="#173a2a"/><stop offset="1" stop-color="#06110c"/>
+    </radialGradient>
+    <radialGradient id="screenHalo" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#6fe39a" stop-opacity="0.2"/><stop offset="1" stop-color="#6fe39a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="lightCone" cx="0.5" cy="0" r="0.9">
+      <stop offset="0" stop-color="#e8f3ff" stop-opacity="0.22"/><stop offset="0.6" stop-color="#e8f3ff" stop-opacity="0.05"/><stop offset="1" stop-color="#e8f3ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vignette" cx="0.5" cy="0.5" r="0.75">
+      <stop offset="0.5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.78"/>
+    </radialGradient>
+    <linearGradient id="night" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1622"/><stop offset="1" stop-color="#1b2838"/>
+    </linearGradient>
+    <radialGradient id="blood" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#2a0c09"/><stop offset="0.7" stop-color="#33120d" stop-opacity="0.85"/><stop offset="1" stop-color="#4a1712" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="ledGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ff3b2f" stop-opacity="0.35"/><stop offset="1" stop-color="#ff3b2f" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="2" fill="#000" opacity="0.25"/>
+    </pattern>
+    <filter id="ledBloom" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4"/></filter>
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.35 0"/></filter>
+  </defs>
+
+  <!-- 墙与地面 -->
+  <rect width="1280" height="480" fill="url(#wall)"/>
+  <!-- 剥落的墙皮 -->
+  <g fill="#4a545e" opacity="0.9">
+    <path d="M360 330 l40 -8 22 18 -6 30 -38 6 -24 -20z"/>
+    <path d="M820 40 l60 4 10 26 -30 14 -46 -10z"/>
+    <path d="M30 400 l50 -6 14 30 -40 20 -30 -12z"/>
+  </g>
+  <g fill="none" stroke="#1a2128" stroke-width="2">
+    <path d="M90 30 l18 30 -8 22 14 30 -10 26"/>
+    <path d="M1120 20 q-30 40 -10 90 l-18 40"/>
+    <path d="M540 140 l-20 40 10 30 -16 34"/>
+    <path d="M900 330 l30 20 -6 30 22 26"/>
+  </g>
+  <!-- 水渍 -->
+  <ellipse cx="940" cy="70" rx="90" ry="26" fill="#1f272f" opacity="0.6"/>
+  <path d="M935 90 q4 60 -2 120" stroke="#1f272f" stroke-width="10" opacity="0.4" fill="none"/>
+  <rect x="0" y="455" width="1280" height="25" fill="#1c232a"/>
+  <rect y="480" width="1280" height="240" fill="url(#floor)"/>
+  <g stroke="#2a323a" stroke-width="2" opacity="0.6">
+    <line x1="0" y1="560" x2="1280" y2="560"/><line x1="0" y1="650" x2="1280" y2="650"/>
+    <line x1="200" y1="480" x2="80" y2="720"/><line x1="460" y1="480" x2="400" y2="720"/>
+    <line x1="720" y1="480" x2="760" y2="720"/><line x1="980" y1="480" x2="1100" y2="720"/>
+  </g>
+  <!-- 碎裂的地砖 -->
+  <g stroke="#0c0f12" stroke-width="2" fill="none">
+    <path d="M140 600 l30 -20 18 34 26 -10"/><path d="M1150 680 l-24 -30 20 -20"/>
+  </g>
+
+  <!-- 墙上的旧血迹（低处，喷溅后干涸成褐色） -->
+  <g opacity="0.75">
+    <path d="M1100 380 q14 30 4 70 q-6 10 -10 0 q2 -30 -8 -60z" fill="#3e140f"/>
+    <circle cx="1085" cy="372" r="6" fill="#3e140f"/><circle cx="1122" cy="395" r="4" fill="#3e140f"/>
+    <circle cx="1072" cy="402" r="3" fill="#3e140f"/><circle cx="1130" cy="360" r="2.5" fill="#3e140f"/>
+    <path d="M1060 420 q20 -6 50 4" stroke="#3e140f" stroke-width="5" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- 日光灯（一端坏了，吊线松脱） -->
+  <rect x="440" y="18" width="400" height="16" rx="4" fill="#5f6a74" transform="rotate(2 640 26)"/>
+  <rect x="452" y="31" width="290" height="8" rx="4" fill="#eef5ff" transform="rotate(2 640 26)"/>
+  <rect x="742" y="34" width="86" height="8" rx="4" fill="#5c6670" transform="rotate(2 640 26)"/>
+  <path d="M830 34 q20 40 6 90 q-6 20 4 40" stroke="#15191d" stroke-width="2.5" fill="none"/>
+  <polygon points="440,38 760,40 1040,720 160,720" fill="url(#lightCone)"/>
+
+  <!-- 窗户（实时：暴风雪夜；一块玻璃碎了） -->
+  <g id="hs-window">
+    <rect x="985" y="105" width="200" height="200" fill="#424c56"/>
+    <rect x="997" y="117" width="176" height="176" fill="url(#night)"/>
+    <line x1="1085" y1="117" x2="1085" y2="293" stroke="#424c56" stroke-width="8"/>
+    <line x1="997" y1="205" x2="1173" y2="205" stroke="#424c56" stroke-width="8"/>
+    <g stroke="#cfdbe6" stroke-width="1.6" opacity="0.7">
+      <line x1="1005" y1="130" x2="1040" y2="150"/><line x1="1030" y1="170" x2="1070" y2="190"/>
+      <line x1="1100" y1="125" x2="1140" y2="148"/><line x1="1120" y1="230" x2="1160" y2="252"/>
+      <line x1="1010" y1="240" x2="1050" y2="262"/><line x1="1095" y1="180" x2="1130" y2="200"/>
+      <line x1="1140" y1="270" x2="1170" y2="286"/><line x1="1040" y1="270" x2="1075" y2="288"/>
+    </g>
+    <g stroke="#9fb0bf" stroke-width="1.2" fill="none" opacity="0.8">
+      <path d="M1130 140 l-14 18 l22 6 l-8 22 m-14 -28 l-20 -4 m34 10 l16 -10"/>
+    </g>
+    <path d="M1100 160 l20 -30 l30 10 l-6 30z" fill="#0a1119"/>
+    <path d="M997 293 q40 -22 88 -8 q50 -16 88 -6 v14 h-176z" fill="#dfe8ef" opacity="0.85"/>
+    <path d="M985 305 q30 6 60 2 q40 8 80 0 q30 6 60 0 v10 h-200z" fill="#c9d4dd" opacity="0.7"/>
+  </g>
+
+  <!-- 电子钟（实时，七段数码管） -->
+  <g id="hs-clock">
+    <rect x="590" y="78" width="150" height="72" rx="6" fill="#141619" stroke="#3a3f45" stroke-width="3"/>
+    <rect x="600" y="85" width="130" height="60" rx="3" fill="#0a0b0c"/>
+    <ellipse cx="665" cy="110" rx="80" ry="32" fill="url(#ledGlow)"/>
+    <g fill="#2a0f0d"><polygon points="607,92.25 609.25,90.0 624.75,90.0 627,92.25 624.75,94.5 609.25,94.5"/><polygon points="607,109.0 609.25,106.75 624.75,106.75 627,109.0 624.75,111.25 609.25,111.25"/><polygon points="607,125.75 609.25,123.5 624.75,123.5 627,125.75 624.75,128.0 609.25,128.0"/><polygon points="608.25,91 610.5,93.25 610.5,105.75 608.25,108.0 606.0,105.75 606.0,93.25"/><polygon points="625.75,91 628.0,93.25 628.0,105.75 625.75,108.0 623.5,105.75 623.5,93.25"/><polygon points="608.25,110.0 610.5,112.25 610.5,124.75 608.25,127 606.0,124.75 606.0,112.25"/><polygon points="625.75,110.0 628.0,112.25 628.0,124.75 625.75,127 623.5,124.75 623.5,112.25"/><polygon points="633,92.25 635.25,90.0 650.75,90.0 653,92.25 650.75,94.5 635.25,94.5"/><polygon points="633,109.0 635.25,106.75 650.75,106.75 653,109.0 650.75,111.25 635.25,111.25"/><polygon points="633,125.75 635.25,123.5 650.75,123.5 653,125.75 650.75,128.0 635.25,128.0"/><polygon points="634.25,91 636.5,93.25 636.5,105.75 634.25,108.0 632.0,105.75 632.0,93.25"/><polygon points="651.75,91 654.0,93.25 654.0,105.75 651.75,108.0 649.5,105.75 649.5,93.25"/><polygon points="634.25,110.0 636.5,112.25 636.5,124.75 634.25,127 632.0,124.75 632.0,112.25"/><polygon points="651.75,110.0 654.0,112.25 654.0,124.75 651.75,127 649.5,124.75 649.5,112.25"/><polygon points="673,92.25 675.25,90.0 690.75,90.0 693,92.25 690.75,94.5 675.25,94.5"/><polygon points="673,109.0 675.25,106.75 690.75,106.75 693,109.0 690.75,111.25 675.25,111.25"/><polygon points="673,125.75 675.25,123.5 690.75,123.5 693,125.75 690.75,128.0 675.25,128.0"/><polygon points="674.25,91 676.5,93.25 676.5,105.75 674.25,108.0 672.0,105.75 672.0,93.25"/><polygon points="691.75,91 694.0,93.25 694.0,105.75 691.75,108.0 689.5,105.75 689.5,93.25"/><polygon points="674.25,110.0 676.5,112.25 676.5,124.75 674.25,127 672.0,124.75 672.0,112.25"/><polygon points="691.75,110.0 694.0,112.25 694.0,124.75 691.75,127 689.5,124.75 689.5,112.25"/><polygon points="699,92.25 701.25,90.0 716.75,90.0 719,92.25 716.75,94.5 701.25,94.5"/><polygon points="699,109.0 701.25,106.75 716.75,106.75 719,109.0 716.75,111.25 701.25,111.25"/><polygon points="699,125.75 701.25,123.5 716.75,123.5 719,125.75 716.75,128.0 701.25,128.0"/><polygon points="700.25,91 702.5,93.25 702.5,105.75 700.25,108.0 698.0,105.75 698.0,93.25"/><polygon points="717.75,91 720.0,93.25 720.0,105.75 717.75,108.0 715.5,105.75 715.5,93.25"/><polygon points="700.25,110.0 702.5,112.25 702.5,124.75 700.25,127 698.0,124.75 698.0,112.25"/><polygon points="717.75,110.0 720.0,112.25 720.0,124.75 717.75,127 715.5,124.75 715.5,112.25"/><polygon points="606.6,132.4 607.5,131.5 611.5,131.5 612.4,132.4 611.5,133.3 607.5,133.3"/><polygon points="606.6,137.5 607.5,136.6 611.5,136.6 612.4,137.5 611.5,138.4 607.5,138.4"/><polygon points="606.6,142.6 607.5,141.7 611.5,141.7 612.4,142.6 611.5,143.5 607.5,143.5"/><polygon points="606.9,132.1 607.8,133.0 607.8,136.0 606.9,136.9 606.0,136.0 606.0,133.0"/><polygon points="612.1,132.1 613.0,133.0 613.0,136.0 612.1,136.9 611.2,136.0 611.2,133.0"/><polygon points="606.9,138.1 607.8,139.0 607.8,142.0 606.9,142.9 606.0,142.0 606.0,139.0"/><polygon points="612.1,138.1 613.0,139.0 613.0,142.0 612.1,142.9 611.2,142.0 611.2,139.0"/><polygon points="615.6,132.4 616.5,131.5 620.5,131.5 621.4,132.4 620.5,133.3 616.5,133.3"/><polygon points="615.6,137.5 616.5,136.6 620.5,136.6 621.4,137.5 620.5,138.4 616.5,138.4"/><polygon points="615.6,142.6 616.5,141.7 620.5,141.7 621.4,142.6 620.5,143.5 616.5,143.5"/><polygon points="615.9,132.1 616.8,133.0 616.8,136.0 615.9,136.9 615.0,136.0 615.0,133.0"/><polygon points="621.1,132.1 622.0,133.0 622.0,136.0 621.1,136.9 620.2,136.0 620.2,133.0"/><polygon points="615.9,138.1 616.8,139.0 616.8,142.0 615.9,142.9 615.0,142.0 615.0,139.0"/><polygon points="621.1,138.1 622.0,139.0 622.0,142.0 621.1,142.9 620.2,142.0 620.2,139.0"/><polygon points="630.6,132.4 631.5,131.5 635.5,131.5 636.4,132.4 635.5,133.3 631.5,133.3"/><polygon points="630.6,137.5 631.5,136.6 635.5,136.6 636.4,137.5 635.5,138.4 631.5,138.4"/><polygon points="630.6,142.6 631.5,141.7 635.5,141.7 636.4,142.6 635.5,143.5 631.5,143.5"/><polygon points="630.9,132.1 631.8,133.0 631.8,136.0 630.9,136.9 630.0,136.0 630.0,133.0"/><polygon points="636.1,132.1 637.0,133.0 637.0,136.0 636.1,136.9 635.2,136.0 635.2,133.0"/><polygon points="630.9,138.1 631.8,139.0 631.8,142.0 630.9,142.9 630.0,142.0 630.0,139.0"/><polygon points="636.1,138.1 637.0,139.0 637.0,142.0 636.1,142.9 635.2,142.0 635.2,139.0"/><polygon points="639.6,132.4 640.5,131.5 644.5,131.5 645.4,132.4 644.5,133.3 640.5,133.3"/><polygon points="639.6,137.5 640.5,136.6 644.5,136.6 645.4,137.5 644.5,138.4 640.5,138.4"/><polygon points="639.6,142.6 640.5,141.7 644.5,141.7 645.4,142.6 644.5,143.5 640.5,143.5"/><polygon points="639.9,132.1 640.8,133.0 640.8,136.0 639.9,136.9 639.0,136.0 639.0,133.0"/><polygon points="645.1,132.1 646.0,133.0 646.0,136.0 645.1,136.9 644.2,136.0 644.2,133.0"/><polygon points="639.9,138.1 640.8,139.0 640.8,142.0 639.9,142.9 639.0,142.0 639.0,139.0"/><polygon points="645.1,138.1 646.0,139.0 646.0,142.0 645.1,142.9 644.2,142.0 644.2,139.0"/><rect x="661" y="99" width="5" height="5"/><rect x="661" y="114" width="5" height="5"/><polygon points="624,143.5 625.6,143.5 628.6,131.5 627,131.5"/></g>
+    <g id="clock-segments" fill="#ff3b2f" filter="url(#ledBloom)"><polygon id="clk-0-a" points="607,92.25 609.25,90.0 624.75,90.0 627,92.25 624.75,94.5 609.25,94.5"/><polygon id="clk-0-g" points="607,109.0 609.25,106.75 624.75,106.75 627,109.0 624.75,111.25 609.25,111.25"/><polygon id="clk-0-d" points="607,125.75 609.25,123.5 624.75,123.5 627,125.75 624.75,128.0 609.25,128.0"/><polygon id="clk-0-f" points="608.25,91 610.5,93.25 610.5,105.75 608.25,108.0 606.0,105.75 606.0,93.25" style="display:none"/><polygon id="clk-0-b" points="625.75,91 628.0,93.25 628.0,105.75 625.75,108.0 623.5,105.75 623.5,93.25"/><polygon id="clk-0-e" points="608.25,110.0 610.5,112.25 610.5,124.75 608.25,127 606.0,124.75 606.0,112.25"/><polygon id="clk-0-c" points="625.75,110.0 628.0,112.25 628.0,124.75 625.75,127 623.5,124.75 623.5,112.25" style="display:none"/><polygon id="clk-1-a" points="633,92.25 635.25,90.0 650.75,90.0 653,92.25 650.75,94.5 635.25,94.5"/><polygon id="clk-1-g" points="633,109.0 635.25,106.75 650.75,106.75 653,109.0 650.75,111.25 635.25,111.25"/><polygon id="clk-1-d" points="633,125.75 635.25,123.5 650.75,123.5 653,125.75 650.75,128.0 635.25,128.0"/><polygon id="clk-1-f" points="634.25,91 636.5,93.25 636.5,105.75 634.25,108.0 632.0,105.75 632.0,93.25" style="display:none"/><polygon id="clk-1-b" points="651.75,91 654.0,93.25 654.0,105.75 651.75,108.0 649.5,105.75 649.5,93.25"/><polygon id="clk-1-e" points="634.25,110.0 636.5,112.25 636.5,124.75 634.25,127 632.0,124.75 632.0,112.25" style="display:none"/><polygon id="clk-1-c" points="651.75,110.0 654.0,112.25 654.0,124.75 651.75,127 649.5,124.75 649.5,112.25"/><polygon id="clk-2-a" points="673,92.25 675.25,90.0 690.75,90.0 693,92.25 690.75,94.5 675.25,94.5"/><polygon id="clk-2-g" points="673,109.0 675.25,106.75 690.75,106.75 693,109.0 690.75,111.25 675.25,111.25"/><polygon id="clk-2-d" points="673,125.75 675.25,123.5 690.75,123.5 693,125.75 690.75,128.0 675.25,128.0"/><polygon id="clk-2-f" points="674.25,91 676.5,93.25 676.5,105.75 674.25,108.0 672.0,105.75 672.0,93.25"/><polygon id="clk-2-b" points="691.75,91 694.0,93.25 694.0,105.75 691.75,108.0 689.5,105.75 689.5,93.25" style="display:none"/><polygon id="clk-2-e" points="674.25,110.0 676.5,112.25 676.5,124.75 674.25,127 672.0,124.75 672.0,112.25" style="display:none"/><polygon id="clk-2-c" points="691.75,110.0 694.0,112.25 694.0,124.75 691.75,127 689.5,124.75 689.5,112.25"/><polygon id="clk-3-a" points="699,92.25 701.25,90.0 716.75,90.0 719,92.25 716.75,94.5 701.25,94.5" style="display:none"/><polygon id="clk-3-g" points="699,109.0 701.25,106.75 716.75,106.75 719,109.0 716.75,111.25 701.25,111.25"/><polygon id="clk-3-d" points="699,125.75 701.25,123.5 716.75,123.5 719,125.75 716.75,128.0 701.25,128.0" style="display:none"/><polygon id="clk-3-f" points="700.25,91 702.5,93.25 702.5,105.75 700.25,108.0 698.0,105.75 698.0,93.25"/><polygon id="clk-3-b" points="717.75,91 720.0,93.25 720.0,105.75 717.75,108.0 715.5,105.75 715.5,93.25"/><polygon id="clk-3-e" points="700.25,110.0 702.5,112.25 702.5,124.75 700.25,127 698.0,124.75 698.0,112.25" style="display:none"/><polygon id="clk-3-c" points="717.75,110.0 720.0,112.25 720.0,124.75 717.75,127 715.5,124.75 715.5,112.25"/><polygon id="date-0-a" points="606.6,132.4 607.5,131.5 611.5,131.5 612.4,132.4 611.5,133.3 607.5,133.3" style="display:none"/><polygon id="date-0-g" points="606.6,137.5 607.5,136.6 611.5,136.6 612.4,137.5 611.5,138.4 607.5,138.4" style="display:none"/><polygon id="date-0-d" points="606.6,142.6 607.5,141.7 611.5,141.7 612.4,142.6 611.5,143.5 607.5,143.5" style="display:none"/><polygon id="date-0-f" points="606.9,132.1 607.8,133.0 607.8,136.0 606.9,136.9 606.0,136.0 606.0,133.0" style="display:none"/><polygon id="date-0-b" points="612.1,132.1 613.0,133.0 613.0,136.0 612.1,136.9 611.2,136.0 611.2,133.0"/><polygon id="date-0-e" points="606.9,138.1 607.8,139.0 607.8,142.0 606.9,142.9 606.0,142.0 606.0,139.0" style="display:none"/><polygon id="date-0-c" points="612.1,138.1 613.0,139.0 613.0,142.0 612.1,142.9 611.2,142.0 611.2,139.0"/><polygon id="date-1-a" points="615.6,132.4 616.5,131.5 620.5,131.5 621.4,132.4 620.5,133.3 616.5,133.3"/><polygon id="date-1-g" points="615.6,137.5 616.5,136.6 620.5,136.6 621.4,137.5 620.5,138.4 616.5,138.4" style="display:none"/><polygon id="date-1-d" points="615.6,142.6 616.5,141.7 620.5,141.7 621.4,142.6 620.5,143.5 616.5,143.5"/><polygon id="date-1-f" points="615.9,132.1 616.8,133.0 616.8,136.0 615.9,136.9 615.0,136.0 615.0,133.0"/><polygon id="date-1-b" points="621.1,132.1 622.0,133.0 622.0,136.0 621.1,136.9 620.2,136.0 620.2,133.0"/><polygon id="date-1-e" points="615.9,138.1 616.8,139.0 616.8,142.0 615.9,142.9 615.0,142.0 615.0,139.0"/><polygon id="date-1-c" points="621.1,138.1 622.0,139.0 622.0,142.0 621.1,142.9 620.2,142.0 620.2,139.0"/><polygon id="date-2-a" points="630.6,132.4 631.5,131.5 635.5,131.5 636.4,132.4 635.5,133.3 631.5,133.3" style="display:none"/><polygon id="date-2-g" points="630.6,137.5 631.5,136.6 635.5,136.6 636.4,137.5 635.5,138.4 631.5,138.4" style="display:none"/><polygon id="date-2-d" points="630.6,142.6 631.5,141.7 635.5,141.7 636.4,142.6 635.5,143.5 631.5,143.5" style="display:none"/><polygon id="date-2-f" points="630.9,132.1 631.8,133.0 631.8,136.0 630.9,136.9 630.0,136.0 630.0,133.0" style="display:none"/><polygon id="date-2-b" points="636.1,132.1 637.0,133.0 637.0,136.0 636.1,136.9 635.2,136.0 635.2,133.0"/><polygon id="date-2-e" points="630.9,138.1 631.8,139.0 631.8,142.0 630.9,142.9 630.0,142.0 630.0,139.0" style="display:none"/><polygon id="date-2-c" points="636.1,138.1 637.0,139.0 637.0,142.0 636.1,142.9 635.2,142.0 635.2,139.0"/><polygon id="date-3-a" points="639.6,132.4 640.5,131.5 644.5,131.5 645.4,132.4 644.5,133.3 640.5,133.3"/><polygon id="date-3-g" points="639.6,137.5 640.5,136.6 644.5,136.6 645.4,137.5 644.5,138.4 640.5,138.4" style="display:none"/><polygon id="date-3-d" points="639.6,142.6 640.5,141.7 644.5,141.7 645.4,142.6 644.5,143.5 640.5,143.5" style="display:none"/><polygon id="date-3-f" points="639.9,132.1 640.8,133.0 640.8,136.0 639.9,136.9 639.0,136.0 639.0,133.0" style="display:none"/><polygon id="date-3-b" points="645.1,132.1 646.0,133.0 646.0,136.0 645.1,136.9 644.2,136.0 644.2,133.0"/><polygon id="date-3-e" points="639.9,138.1 640.8,139.0 640.8,142.0 639.9,142.9 639.0,142.0 639.0,139.0" style="display:none"/><polygon id="date-3-c" points="645.1,138.1 646.0,139.0 646.0,142.0 645.1,142.9 644.2,142.0 644.2,139.0"/><rect id="clk-colon-1" x="661" y="99" width="5" height="5"/><rect id="clk-colon-2" x="661" y="114" width="5" height="5"/><polygon points="624,143.5 625.6,143.5 628.6,131.5 627,131.5"/></g>
+    <line x1="665" y1="78" x2="665" y2="70" stroke="#15191d" stroke-width="2"/>
+    <path d="M600 150 l-6 10 m140 -10 l6 12" stroke="#2a2f35" stroke-width="2"/>
+  </g>
+
+  <!-- 公告栏（纸张发黄、撕破、卷边，有一张掉在地上） -->
+  <g id="hs-notice-board">
+    <rect x="55" y="115" width="285" height="250" fill="#4d3824" stroke="#2a1e13" stroke-width="8"/>
+    <rect x="63" y="123" width="269" height="234" fill="#6a4e33"/>
+    <g fill="#3c2b1b" opacity="0.6"><circle cx="300" cy="140" r="12"/><circle cx="90" cy="330" r="16"/><circle cx="190" cy="226" r="10"/></g>
+    <g font-size="11" filter="url(#rough)">
+      <g transform="rotate(-3 120 175)">
+        <path d="M75 135 h110 v52 l-8 6 -10 -4 -12 10 -14 -6 -12 9 -16 -5 -12 6 -14 -4 -12 7z" fill="#d8cfb4"/>
+        <text x="84" y="152" fill="#8f2e25" font-weight="700">【通知】</text>
+        <text x="84" y="170" fill="#3a3326">B3 矿井自 JT114.05</text><text x="84" y="185" fill="#3a3326">起停止作</text>
+      </g>
+      <g transform="rotate(7 260 175)">
+        <path d="M200 132 h118 v70 l-20 12 h-98z" fill="#ddd3ba"/>
+        <path d="M298 202 l20 -0 l-20 12z" fill="#b8ad91"/>
+        <text x="209" y="150" fill="#8f2e25" font-weight="700">【通知】</text>
+        <text x="209" y="168" fill="#3a3326">6月22日晚餐加餐</text><text x="209" y="183" fill="#3a3326">庆祝息岭全境</text>
+        <ellipse cx="290" cy="170" rx="22" ry="14" fill="#a3946f" opacity="0.5"/>
+      </g>
+      <g transform="rotate(-6 120 290)">
+        <path d="M75 232 h40 l6 10 -4 12 8 8 -6 14 6 10 -4 20 h-46z" fill="#d2c8ab"/>
+        <text x="80" y="250" fill="#8f2e25" font-weight="700">【通</text>
+        <text x="80" y="268" fill="#3a3326">封山期</text><text x="80" y="283" fill="#3a3326">9月30</text>
+      </g>
+      <g transform="rotate(-11 260 270)">
+        <path d="M200 228 h118 v62 h-118z" fill="#e2d4a8"/>
+        <path d="M200 228 l26 0 l-26 22z" fill="#6a4e33"/>
+        <text x="212" y="246" fill="#8f2e25" font-weight="700">失物招领】</text>
+        <text x="209" y="264" fill="#3a3326">粉色保温杯一个</text><text x="209" y="279" fill="#3a3326">杯底刻“禾”字</text>
+      </g>
+    </g>
+    <g fill="#8f2e25"><circle cx="130" cy="138" r="4"/><circle cx="259" cy="135" r="4"/><circle cx="96" cy="236" r="4"/><circle cx="270" cy="232" r="4"/><circle cx="258" cy="303" r="4"/></g>
+    <path d="M253 303 l-8 -6 m14 6 l9 -5" stroke="#d8cfb4" stroke-width="3"/>
+  </g>
+  <!-- 掉在地上的寻书启事 -->
+  <g id="hs-notice-fallen" transform="rotate(18 190 640)" filter="url(#rough)">
+    <path d="M140 618 h110 v44 l-30 6 h-80z" fill="#cfc6ae"/>
+    <text x="148" y="636" font-size="11" fill="#1f4070" font-weight="700">【寻书】</text>
+    <text x="148" y="653" font-size="10" fill="#3a3326">《管家不在场》下册</text>
+    <ellipse cx="220" cy="650" rx="18" ry="8" fill="#5b4a3a" opacity="0.5"/>
+  </g>
+
+  <!-- 值班表 -->
+  <g id="hs-roster" transform="rotate(4 420 200)">
+    <path d="M365 135 h120 v150 l-12 -6 -14 8 -16 -4 -14 6 -16 -6 -14 5 -16 -4 -18 4z" fill="#ddd5c0"/>
+    <text x="378" y="155" font-size="12" font-weight="700" fill="#222">值班表</text>
+    <text x="378" y="170" font-size="9" fill="#555">JT116 年 6 月第四周</text>
+    <g stroke="#8e8777" stroke-width="1">
+      <line x1="372" y1="180" x2="478" y2="180"/><line x1="372" y1="205" x2="478" y2="205"/>
+      <line x1="372" y1="230" x2="478" y2="230"/><line x1="372" y1="255" x2="478" y2="255"/>
+      <line x1="405" y1="180" x2="405" y2="272"/><line x1="442" y1="180" x2="442" y2="272"/>
+    </g>
+    <g font-size="8" fill="#333">
+      <text x="375" y="196">06.20</text><text x="407" y="196">孙启</text><text x="444" y="196">周北</text>
+      <text x="375" y="221">06.21</text><text x="407" y="221">周北</text><text x="444" y="221">孙启</text>
+      <text x="375" y="246">06.22</text><text x="407" y="246">赵立平</text><text x="444" y="246">赵立平</text>
+      <text x="375" y="268">06.23</text><text x="407" y="268">孙启</text><text x="444" y="268">周北</text>
+    </g>
+    <circle cx="425" cy="140" r="4" fill="#3b6ea8"/>
+    <path d="M470 150 q8 14 2 30" stroke="#4a1712" stroke-width="3" fill="none" opacity="0.7"/>
+  </g>
+
+  <!-- 桌子：右前腿断了，桌面向右下塌；一个抽屉掉在地上 -->
+  <g transform="rotate(3 300 500)">
+    <polygon points="320,430 990,430 1030,505 280,505" fill="url(#deskTop)"/>
+    <path d="M600 432 l40 30 -20 30" stroke="#2a2019" stroke-width="2" fill="none"/>
+    <rect x="280" y="505" width="750" height="135" fill="url(#deskFront)"/>
+    <rect x="300" y="520" width="200" height="50" fill="#2e231b" stroke="#1d1611" stroke-width="2"/>
+    <rect x="385" y="540" width="30" height="6" rx="3" fill="#7f7258"/>
+    <rect x="300" y="578" width="200" height="50" fill="#0e0b08" stroke="#1d1611" stroke-width="2"/>
+    <rect x="290" y="640" width="18" height="40" fill="#241b14"/>
+    <polygon points="1002,640 1020,640 1016,652 1008,656 1004,648" fill="#241b14"/>
+  </g>
+  <!-- 撑在桌子下的砖头（断腿下面） -->
+  <rect x="990" y="680" width="44" height="20" fill="#5a3b30" stroke="#2d1d17" stroke-width="2"/>
+  <!-- 掉在地上的抽屉，纸散了一地 -->
+  <g transform="rotate(-10 450 690)">
+    <rect x="390" y="668" width="170" height="40" fill="#2e231b" stroke="#1a140f" stroke-width="2"/>
+    <rect x="395" y="660" width="40" height="12" fill="#cfc8b4"/><rect x="440" y="662" width="30" height="10" fill="#bdb6a2"/>
+  </g>
+
+  <!-- 主机（灯亮着，侧板脱落） -->
+  <rect x="820" y="335" width="120" height="105" fill="#a7a08a" stroke="#6e695a" stroke-width="2" transform="rotate(3 300 500)"/>
+  <rect x="835" y="355" width="70" height="8" fill="#5f5a4e" transform="rotate(3 300 500)"/>
+  <circle cx="914" cy="418" r="5" fill="#59ff8a"/><circle cx="914" cy="418" r="12" fill="#59ff8a" opacity="0.25"/>
+  <path d="M940 380 q30 60 10 140 q-10 40 20 80" stroke="#15191d" stroke-width="3" fill="none"/>
+
+  <!-- CRT 显示器（外壳缺角、屏幕一角有裂纹，仍亮着登录界面） -->
+  <g id="hs-monitor" transform="rotate(3 300 500)">
+    <ellipse cx="640" cy="335" rx="190" ry="120" fill="url(#screenHalo)"/>
+    <polygon points="760,255 805,275 805,405 760,425" fill="#7d7764"/>
+    <path d="M510 257 q0 -12 12 -12 h231 q12 0 12 12 v161 q0 12 -12 12 h-200 l-14 -14 -10 8 -12 -10 h-7 q-12 0 -12 -12z" fill="url(#crt)" stroke="#6e695a" stroke-width="2"/>
+    <rect x="535" y="265" width="205" height="140" rx="10" fill="url(#screenGlow)"/>
+    <g font-family="'Courier New','Noto Sans CJK SC',monospace" fill="#7ff0a6">
+      <text x="560" y="300" font-size="15" font-weight="700">BN内网工作站</text>
+      <text x="560" y="335" font-size="12">用户名：________</text>
+      <text x="560" y="360" font-size="12">密  码：____</text>
+      <rect x="638" y="350" width="8" height="12" fill="#7ff0a6"/>
+    </g>
+    <rect x="535" y="265" width="205" height="140" rx="10" fill="url(#scan)"/>
+    <g stroke="#c8f5d8" stroke-width="1" opacity="0.55" fill="none">
+      <path d="M738 268 l-24 22 l-6 26 m30 -36 l-40 8 m40 -8 l-10 40"/>
+    </g>
+    <path d="M700 268 l-8 4" stroke="#4a1712" stroke-width="3"/>
+    <rect x="610" y="430" width="55" height="12" fill="#7d7764"/>
+  </g>
+
+  <!-- 显示器侧面露出的便签（镜像字） -->
+  <g id="hs-sticky-note" transform="rotate(3 300 500)">
+    <polygon points="770,300 802,312 800,350 768,340" fill="#d9bf4f"/>
+    <path d="M768 340 l14 4 -4 -10z" fill="#b09a3c"/>
+    <g transform="translate(796 322) scale(-1 1) skewY(18)" font-size="7" fill="#4a3d0e">
+      <text x="0" y="0">密码=我的生日</text><text x="0" y="10">别再锁了!!</text>
+    </g>
+  </g>
+
+  <!-- 键盘（掉了几个键帽） -->
+  <g transform="rotate(3 300 500)">
+    <polygon points="545,445 755,445 770,478 530,478" fill="#aaa38d" stroke="#6e695a" stroke-width="1.5"/>
+    <g fill="#8c8571">
+      <rect x="555" y="451" width="190" height="6"/><rect x="550" y="460" width="200" height="6"/><rect x="545" y="469" width="210" height="5"/>
+    </g>
+    <g fill="#2b2620"><rect x="600" y="451" width="9" height="6"/><rect x="680" y="460" width="9" height="6"/><rect x="640" y="469" width="12" height="5"/></g>
+  </g>
+
+  <!-- 值班日志（摊开，纸页边缘有干涸的血指印） -->
+  <g id="hs-duty-log" transform="rotate(3 300 500)">
+    <polygon points="345,448 495,448 505,492 335,492" fill="#d9d1b9" stroke="#7f7764" stroke-width="1.5"/>
+    <line x1="420" y1="448" x2="420" y2="492" stroke="#7f7764" stroke-width="1.5"/>
+    <g stroke="#8c8472" stroke-width="1">
+      <line x1="352" y1="458" x2="414" y2="458"/><line x1="350" y1="466" x2="414" y2="466"/><line x1="348" y1="474" x2="414" y2="474"/><line x1="346" y1="482" x2="400" y2="482"/>
+      <line x1="426" y1="458" x2="490" y2="458"/><line x1="426" y1="466" x2="492" y2="466"/><line x1="426" y1="474" x2="470" y2="474"/>
+    </g>
+    <path d="M470 474 q8 6 14 2" stroke="#333" stroke-width="1.4" fill="none"/>
+    <ellipse cx="497" cy="480" rx="6" ry="4" fill="#4a1712" opacity="0.8"/>
+    <ellipse cx="490" cy="488" rx="4" ry="3" fill="#4a1712" opacity="0.7"/>
+    <rect x="437" y="488" width="5" height="22" fill="#8f2e25"/>
+  </g>
+  <!-- 滚到地上的笔 -->
+  <path d="M640 600 l26 -8" stroke="#1d1d1d" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- 打翻的搪瓷杯、听筒垂下 -->
+  <g transform="rotate(3 300 500)">
+    <g transform="rotate(80 805 455)">
+      <rect x="790" y="438" width="26" height="30" rx="3" fill="#d8d4c8"/>
+      <rect x="790" y="438" width="26" height="5" fill="#8f2e25"/>
+      <path d="M800 452 l5 6 -4 3" fill="#3a2f22"/>
+    </g>
+    <ellipse cx="770" cy="470" rx="28" ry="5" fill="#1f1a14" opacity="0.7"/>
+    <rect x="860" y="452" width="70" height="30" rx="5" fill="#25282c"/>
+  </g>
+  <path d="M905 495 q-10 60 10 100" stroke="#111" stroke-width="2" fill="none"/>
+  <rect x="902" y="592" width="34" height="14" rx="7" fill="#2f3337" transform="rotate(20 919 599)"/>
+
+  <!-- 倒在地上的椅子（断了一条腿） -->
+  <g id="hs-chair" transform="rotate(-72 960 620)">
+    <rect x="900" y="590" width="120" height="16" rx="3" fill="#434c56"/>
+    <path d="M905 526 q0 -6 6 -6 h98 q6 0 6 6 v58 q0 6 -6 6 h-98 q-6 0 -6 -6z" fill="#4d5863"/>
+    <path d="M940 540 l20 10 -8 20" stroke="#2c333a" stroke-width="2" fill="none"/>
+    <g stroke="#2a3036" stroke-width="7" stroke-linecap="round">
+      <line x1="912" y1="606" x2="905" y2="680"/><line x1="1010" y1="606" x2="1013" y2="630"/>
+    </g>
+  </g>
+  <line x1="1150" y1="560" x2="1210" y2="590" stroke="#2a3036" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- 地上的血迹：一大片干涸的血泊 + 拖痕，一直延伸到画面右侧门口方向 -->
+  <ellipse cx="820" cy="640" rx="120" ry="34" fill="url(#blood)"/>
+  <path d="M900 650 q80 10 160 -4 q60 -10 120 6 q40 10 100 4" stroke="#3a100c" stroke-width="16" fill="none" opacity="0.55" stroke-linecap="round"/>
+  <path d="M910 664 q80 6 150 -2 q70 -8 120 8" stroke="#3a100c" stroke-width="6" fill="none" opacity="0.45" stroke-linecap="round"/>
+  <g fill="#3a100c" opacity="0.8">
+    <circle cx="700" cy="610" r="5"/><circle cx="742" cy="598" r="3"/><circle cx="680" cy="630" r="3"/><circle cx="1000" cy="620" r="4"/>
+  </g>
+  <!-- 鞋印（很多双，同一个尺码） -->
+  <g fill="#2c0d0a" opacity="0.55">
+    <ellipse cx="560" cy="700" rx="9" ry="5" transform="rotate(-20 560 700)"/>
+    <ellipse cx="600" cy="686" rx="9" ry="5" transform="rotate(-20 600 686)"/>
+    <ellipse cx="1090" cy="700" rx="9" ry="5" transform="rotate(10 1090 700)"/>
+    <ellipse cx="1130" cy="692" rx="9" ry="5" transform="rotate(10 1130 692)"/>
+    <ellipse cx="1170" cy="702" rx="9" ry="5" transform="rotate(10 1170 702)"/>
+  </g>
+
+  <!-- 地上的士兵证（沾了血） -->
+  <g id="hs-soldier-id" transform="rotate(-14 720 668)">
+    <rect x="690" y="650" width="62" height="40" rx="3" fill="#36503a" stroke="#1d2b1a" stroke-width="1.5"/>
+    <circle cx="721" cy="663" r="7" fill="#a88a3a"/>
+    <text x="721" y="683" font-size="9" fill="#d9cfa2" text-anchor="middle">士兵证</text>
+    <path d="M740 650 q8 10 4 24 l8 6 v-30z" fill="#4a1712" opacity="0.8"/>
+  </g>
+
+  <!-- 杂物：碎玻璃、倒掉的垃圾桶、烟头、散落的纸、灰尘 -->
+  <g fill="#b9c6d1" opacity="0.6">
+    <polygon points="1040,580 1052,574 1048,588"/><polygon points="1066,592 1080,590 1070,600"/>
+    <polygon points="1010,600 1018,596 1016,606"/><polygon points="1095,575 1102,570 1104,582"/>
+  </g>
+  <g transform="rotate(95 220 560)">
+    <path d="M190 520 h60 l-8 80 h-44z" fill="#3e464d" stroke="#262c31" stroke-width="2"/>
+  </g>
+  <g fill="#cbc3ad" opacity="0.8">
+    <polygon points="250,560 290,552 296,576 256,582"/>
+    <polygon points="300,585 340,590 334,606 296,602"/>
+    <polygon points="1080,600 1120,596 1126,622 1084,626"/>
+    <polygon points="580,640 620,632 628,660 586,666"/>
+  </g>
+  <g fill="#dcd6c6"><rect x="330" y="560" width="8" height="2"/><rect x="345" y="568" width="7" height="2"/><rect x="1200" y="640" width="8" height="2"/></g>
+  <rect width="1280" height="720" filter="url(#grain)" opacity="0.5"/>
+
+  <!-- 氛围层 -->
+  <rect width="1280" height="720" fill="url(#vignette)"/>
+  <rect width="1280" height="720" fill="#0a1a2a" opacity="0.2"/>
+
+  <script><![CDATA[
+    // setClock(hh, mm, MM, DD)：游戏可直接复用这个函数，按游玩时间调用。
+    // 下面的自动走时只用于单独打开本 SVG 预览：从 10/17 23:54 开始按真实时间走，冒号每秒闪烁。
+    var SEG = {0:'abcdef',1:'bc',2:'abged',3:'abgcd',4:'fgbc',5:'afgcd',6:'afgedc',7:'abc',8:'abcdefg',9:'abcdfg'};
+    function setDigit(prefix, n) {
+      'abcdefg'.split('').forEach(function (s) {
+        var el = document.getElementById(prefix + '-' + s);
+        if (el) el.style.display = SEG[n].indexOf(s) >= 0 ? '' : 'none';
+      });
+    }
+    function setClock(hh, mm, MM, DD) {
+      var t = String(hh).padStart(2, '0') + String(mm).padStart(2, '0');
+      var d = String(MM).padStart(2, '0') + String(DD).padStart(2, '0');
+      for (var i = 0; i < 4; i++) { setDigit('clk-' + i, +t[i]); setDigit('date-' + i, +d[i]); }
+    }
+    (function () {
+      var start = Date.now(), base = 23 * 60 + 54;
+      function tick() {
+        var sec = Math.floor((Date.now() - start) / 1000);
+        var m = base + Math.floor(sec / 60), day = 17 + Math.floor(m / 1440); m %= 1440;
+        setClock(Math.floor(m / 60), m % 60, 10, day);
+        var on = sec % 2 === 0 ? '' : 'none';
+        document.getElementById('clk-colon-1').style.display = on;
+        document.getElementById('clk-colon-2').style.display = on;
+      }
+      tick(); setInterval(tick, 500);
+    })();
+  ]]></script>
+</svg>

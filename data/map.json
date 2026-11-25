@@ -1,0 +1,12 @@
+{
+  "floors": [
+    {
+      "id": "ground",
+      "name": "地面层",
+      "places": [
+        { "id": "prologue-entrance", "name": "北侧应急入口", "initial": true },
+        { "id": "ch1-duty", "name": "值班室" }
+      ]
+    }
+  ]
+}
