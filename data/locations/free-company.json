@@ -1,0 +1,34 @@
+{
+  "id": "free-company",
+  "name": "特战连连部",
+  "intro": "杨眉当连长后的办公室，她死后由副连长接手，东西没怎么动过。",
+  "hotspots": [
+    {
+      "type": "doc",
+      "id": "schedule",
+      "label": "墙上的训练日程表",
+      "title": "墙上的训练日程表",
+      "source": "训练日程表",
+      "text": "每日 05:30 集合  [[05:40]] 出发\n（05:40 旁边有人用红笔画了一个很小的圈）",
+      "svgId": "hs-schedule"
+    },
+    {
+      "type": "doc",
+      "id": "lesson",
+      "label": "战术教案",
+      "title": "战术教案（杨眉手写，最后一页）",
+      "source": "战术教案",
+      "text": "永远别站在开阔地。\n永远别让后背空着。\n永远别相信“这次不会有事”。",
+      "svgId": "hs-lesson"
+    },
+    {
+      "type": "doc",
+      "id": "handover",
+      "label": "副连长的交接便条",
+      "title": "副连长的交接便条（JT113.03）",
+      "source": "交接便条",
+      "text": "连长的东西我没动，等她家里人来拿。\n桌上那瓶可乐是她前天留的，没开，我也没动。",
+      "svgId": "hs-handover"
+    }
+  ]
+}

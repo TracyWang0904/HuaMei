@@ -1,0 +1,43 @@
+{
+  "id": "final-hall",
+  "name": "地面层 · 大厅",
+  "intro": "电梯停在地面层。四周很安静。身后传来一阵响动。三五个杨眉，正在向他走来。",
+  "hotspots": [
+    {
+      "type": "choice",
+      "id": "last",
+      "label": "身后的响动",
+      "text": "三五个杨眉，正在向他走来。",
+      "options": [
+        {
+          "label": "跑向北门",
+          "effects": [
+            {
+              "ending": "A"
+            }
+          ]
+        },
+        {
+          "label": "原地不动",
+          "effects": [
+            {
+              "ending": "A"
+            }
+          ]
+        },
+        {
+          "label": "播放录音",
+          "showWhen": {
+            "item": "recorder"
+          },
+          "effects": [
+            {
+              "ending": "B"
+            }
+          ]
+        }
+      ],
+      "svgId": "hs-last"
+    }
+  ]
+}

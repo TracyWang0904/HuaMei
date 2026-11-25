@@ -32,5 +32,8 @@
   "puzzle.solved": "已通过",
   "puzzle.pwHint": "密码提示：{hint}",
   "nav.settings": "设置",
-  "save.title": "设置"
+  "save.title": "设置",
+  "puzzle.up": "上移",
+  "puzzle.down": "下移",
+  "ending.back": "返回"
 }

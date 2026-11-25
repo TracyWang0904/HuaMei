@@ -2,6 +2,7 @@ import { h, richText } from './dom.js';
 import { openModal } from './modal.js';
 import { t } from '../core/i18n.js';
 import * as S from '../core/state.js';
+import { applyEffects } from '../core/effects.js';
 
 export function markRead(id) {
   if (!S.get().readDocs.includes(id)) S.update((s) => s.readDocs.push(id));
@@ -10,6 +11,7 @@ export function markRead(id) {
 // 纸质资料。mirror=true 的是镜像字，需要点“翻转”才读得清
 export function openDoc(doc, readId) {
   markRead(readId);
+  if (doc.onOpen) applyEffects(doc.onOpen);
   const text = richText(doc.text, { source: doc.source ?? doc.title });
   const body = h('div', { class: 'paper' + (doc.mirror ? ' mirror' : '') }, text);
   const extra = doc.mirror
