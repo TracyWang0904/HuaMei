@@ -54,7 +54,8 @@
           }
         ]
       },
-      "svgId": "hs-keypad"
+      "svgId": "hs-keypad",
+      "terminal": true
     }
   ],
   "scene": "prologue-entrance",

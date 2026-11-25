@@ -12,11 +12,14 @@ import * as S from '../core/state.js';
 //   traps：[{ answerHash, message }]，输入了某个特定的错误答案时给出专门的提示（比如第七章先试 1127）
 //   passwordHint 在 trapHint 为 true 的谜题里，要先触发 trap 才显示
 // 排序类：{ id, type:'sort', items:[{key,text}]（按打乱后的顺序写）, answerHash }，哈希的内容是按正确顺序连起来的 key
-export function puzzlePanel(puzzle, { onSolved } = {}) {
-  const root = h('div', { class: 'puzzle' });
+// terminal: true 时用黑底绿字的终端样式（门禁键盘），报错也写在面板里，不弹 Windows 消息框
+export function puzzlePanel(puzzle, { onSolved, terminal = false } = {}) {
+  const root = h('div', { class: 'puzzle' + (terminal ? ' term' : '') });
 
   function renderSolved() {
-    root.replaceChildren(h('div', { class: 'msg-row' }, icon('check', 32), h('p', {}, t('puzzle.solved'))));
+    root.replaceChildren(terminal
+      ? h('p', { class: 'term-line' }, `> ${t('puzzle.solved')}`)
+      : h('div', { class: 'msg-row' }, icon('check', 32), h('p', {}, t('puzzle.solved'))));
   }
   if (S.get().solved.includes(puzzle.id)) { renderSolved(); return root; }
 
@@ -26,12 +29,16 @@ export function puzzlePanel(puzzle, { onSolved } = {}) {
     renderSolved();
     onSolved?.();
   };
-  const fail = (text) => openMsgBox({ title: t('ws.title'), text, kind: 'error' });
+  const fail = (text) => {
+    if (!terminal) return openMsgBox({ title: t('ws.title'), text, kind: 'error' });
+    root.querySelector('.term-line')?.remove();
+    root.append(h('p', { class: 'term-line err' }, `> ${text}`));
+  };
 
-  return puzzle.type === 'sort' ? sortPanel(puzzle, root, succeed, fail) : inputPanel(puzzle, root, succeed, fail);
+  return puzzle.type === 'sort' ? sortPanel(puzzle, root, succeed, fail) : inputPanel(puzzle, root, succeed, fail, terminal);
 }
 
-function inputPanel(puzzle, root, succeed, fail) {
+function inputPanel(puzzle, root, succeed, fail, terminal) {
   const inputs = puzzle.fields.map((f) => h('input', {
     type: 'text', name: f.key, maxlength: f.maxLength, autocomplete: 'off', autocapitalize: 'off',
     spellcheck: 'false', inputmode: f.numeric ? 'numeric' : 'text', placeholder: f.placeholder ?? '',
@@ -64,7 +71,7 @@ function inputPanel(puzzle, root, succeed, fail) {
   puzzle.fields.map((f, i) => h('label', { class: 'field' }, h('span', {}, f.label ?? ''), inputs[i])),
   h('div', { class: 'btn-row' }, h('button', { type: 'submit', class: 'btn default' }, t('puzzle.submit'))));
 
-  root.append(h('div', { class: 'login-row' }, icon('key', 32), h('div', { class: 'login-main' }, ...[
+  root.append(h('div', { class: 'login-row' }, terminal ? null : icon('key', 32), h('div', { class: 'login-main' }, ...[
     puzzle.prompt ? h('p', {}, puzzle.prompt) : null, hintLine, form,
   ].filter(Boolean))));
   setTimeout(() => inputs[0]?.focus(), 0);

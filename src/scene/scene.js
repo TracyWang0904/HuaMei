@@ -106,8 +106,9 @@ function activate(place, hs, rerender) {
   else if (hs.type === 'puzzle') {
     if (S.get().solved.includes(hs.puzzle.id) && hs.revealDoc) return openDoc(hs.revealDoc, `${place.id}/${hs.id}`);
     const m = openModal({
-      title: hs.label,
+      title: hs.label, className: hs.terminal ? 'terminal' : '',
       body: puzzlePanel(hs.puzzle, {
+        terminal: !!hs.terminal,
         onSolved: () => setTimeout(() => { m.close(); rerender(); if (hs.revealDoc) openDoc(hs.revealDoc, `${place.id}/${hs.id}`); }, 600),
       }),
     });
