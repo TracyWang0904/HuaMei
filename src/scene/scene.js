@@ -9,7 +9,8 @@ import { openWorkstation } from '../workstation/workstation.js';
 import { startClock } from './clock-display.js';
 
 // 场景图：assets/img/scenes/<scene>.svg，构建时作为文本打包
-const sceneArt = import.meta.glob('/assets/img/scenes/*.svg', { eager: true, query: '?raw', import: 'default' });
+// 不急切加载：有的场景图很大（内嵌底图），进入该场景时才加载
+const sceneArt = import.meta.glob('/assets/img/scenes/*.svg', { query: '?raw', import: 'default' });
 
 export const isUnlocked = (placeId) => {
   const info = gameMap.floors.flatMap((f) => f.places).find((p) => p.id === placeId);
@@ -34,7 +35,11 @@ export function mapView(onEnter) {
 // 场景：满屏的场景图（SVG 里标了 id 的物件可点）。没有图的地点先用占位 + 按钮。
 export function sceneView(placeId, rerender) {
   const place = places[placeId];
-  return buildArt(place, rerender) ?? placeholder(place, rerender);
+  const load = place.scene && sceneArt[`/assets/img/scenes/${place.scene}.svg`];
+  if (!load) return placeholder(place, rerender);
+  const wrap = h('div', { class: 'scene-art' });
+  load().then((raw) => fillArt(wrap, raw, place, rerender));
+  return wrap;
 }
 
 function placeholder(place, rerender) {
@@ -43,10 +48,7 @@ function placeholder(place, rerender) {
     h('div', { class: 'hotspots' }, place.hotspots.map((hs) => hotspotButton(place, hs, rerender))));
 }
 
-function buildArt(place, rerender) {
-  const raw = sceneArt[`/assets/img/scenes/${place.scene}.svg`];
-  if (!place.scene || !raw) return null;
-  const wrap = h('div', { class: 'scene-art' });
+function fillArt(wrap, raw, place, rerender) {
   // 先去注释（注释里提到了 <script>），再去掉 SVG 自带的预览脚本：电子钟由游戏时钟驱动
   wrap.innerHTML = raw.replace(/<!--[\s\S]*?-->/g, '').replace(/<script[\s\S]*?<\/script>/g, '');
   const svg = wrap.querySelector('svg');
@@ -65,8 +67,12 @@ function buildArt(place, rerender) {
       el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(place, hs, rerender); } });
     }
   }
+  // 状态层：某个谜题解开后才显示（比如开门）
+  for (const st of place.states ?? []) {
+    const el = svg.querySelector(`#${st.svgId}`);
+    if (el && S.get().solved.includes(st.showWhenSolved)) el.style.display = '';
+  }
   startClock(svg);
-  return wrap;
 }
 
 const isDone = (hs) => hs.type === 'puzzle' && S.get().solved.includes(hs.puzzle.id);
