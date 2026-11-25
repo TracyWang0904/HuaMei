@@ -1,0 +1,6 @@
+/* A0 占位样式，CRT 与纸张质感在 B1 阶段做 */
+:root { color-scheme: dark; }
+html, body { margin: 0; height: 100%; background: #0b0f14; color: #b8c7d6; font-family: ui-monospace, Menlo, Consolas, monospace; }
+#app { padding: 24px; max-width: 720px; margin: 0 auto; }
+button { font: inherit; color: inherit; background: #16202b; border: 1px solid #2c3d4f; padding: 6px 12px; cursor: pointer; }
+textarea { width: 100%; box-sizing: border-box; min-height: 6em; background: #0f1620; color: inherit; border: 1px solid #2c3d4f; font: inherit; }

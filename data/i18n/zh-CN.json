@@ -1,0 +1,12 @@
+{
+  "app.title": "画眉",
+  "save.export": "导出存档",
+  "save.import": "导入存档",
+  "save.import.prompt": "把导出的存档文本粘贴到这里",
+  "save.import.ok": "存档已导入",
+  "save.import.fail": "存档无法识别",
+  "save.clear": "清除存档",
+  "save.clear.confirm": "清除后无法恢复，确定吗？",
+  "common.ok": "确定",
+  "common.cancel": "取消"
+}
