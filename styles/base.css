@@ -85,6 +85,8 @@ input:focus, textarea:focus { outline: none; }
 .scene-art .hs { cursor: pointer; outline: none; }
 .scene-art .hs:hover, .scene-art .hs:focus-visible { filter: brightness(1.35) drop-shadow(0 0 6px #6fb3d9); }
 .scene-art .hs.done { opacity: .75; }
+/* 透明的点击区域：悬停时描一圈，让玩家知道能点 */
+.scene-art .hs:hover > rect[fill-opacity="0"], .scene-art .hs:focus-visible > rect[fill-opacity="0"] { fill: #fff; fill-opacity: .14; stroke: #6fb3d9; stroke-width: 2; }
 .scene-art.placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; line-height: 1.4; color: #b8c7d6; }
 .scene-art.placeholder p { margin: 0; }
 .scene-art.placeholder .hotspots { justify-content: center; max-width: 720px; }
