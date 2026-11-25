@@ -4,8 +4,94 @@
       "id": "ground",
       "name": "地面层",
       "places": [
-        { "id": "prologue-entrance", "name": "北侧应急入口", "initial": true },
-        { "id": "ch1-duty", "name": "值班室" }
+        {
+          "id": "prologue-entrance",
+          "name": "北侧应急入口",
+          "initial": true
+        },
+        {
+          "id": "ch1-duty",
+          "name": "值班室"
+        },
+        {
+          "id": "ch2-archive",
+          "name": "档案室"
+        },
+        {
+          "id": "ch3-command",
+          "name": "指挥中心"
+        },
+        {
+          "id": "ch3-secretary",
+          "name": "机要室"
+        },
+        {
+          "id": "ch3-commander",
+          "name": "司令员办公室"
+        },
+        {
+          "id": "free-307",
+          "name": "研究所女文职宿舍 307"
+        },
+        {
+          "id": "free-women",
+          "name": "女兵区"
+        },
+        {
+          "id": "free-company",
+          "name": "特战连连部"
+        },
+        {
+          "id": "free-canteen",
+          "name": "食堂"
+        },
+        {
+          "id": "free-weather",
+          "name": "气象站"
+        },
+        {
+          "id": "final-hall",
+          "name": "大厅",
+          "hidden": true
+        }
+      ]
+    },
+    {
+      "id": "b1",
+      "name": "地下一层（B1）",
+      "places": [
+        {
+          "id": "ch4-medical",
+          "name": "医疗区 / 太平间"
+        },
+        {
+          "id": "b1-elevator",
+          "name": "电梯厅"
+        }
+      ]
+    },
+    {
+      "id": "b2",
+      "name": "地下二层（B2）",
+      "places": [
+        {
+          "id": "ch5-lab",
+          "name": "季卿的实验室"
+        },
+        {
+          "id": "ch6-room",
+          "name": "季卿的房间"
+        }
+      ]
+    },
+    {
+      "id": "b3",
+      "name": "地下三层（B3）",
+      "places": [
+        {
+          "id": "ch7-shaft",
+          "name": "矿井"
+        }
       ]
     }
   ]

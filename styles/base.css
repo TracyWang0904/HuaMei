@@ -126,3 +126,20 @@ input:focus, textarea:focus { outline: none; }
 html, body, #app, .stage, .modal-overlay, .win98, .btn, input, textarea, .titlebar, .scene-art, .scene-art svg { cursor: url("/assets/img/ui/cursor-arrow.png") 0 0, default; }
 button, .word, .dicon, .tb-btn, .entry-list button, .start-menu li button, label, .scene-art .hs, .scene-art .hs * { cursor: url("/assets/img/ui/cursor-hand.png") 9 0, pointer; }
 input[type=text], textarea { cursor: text; }
+
+/* —— 排序谜题 / 条目按钮 —— */
+.sort-list { list-style: none; margin: 0 0 8px; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.sort-list li { display: flex; gap: 8px; align-items: center; background: #fff; box-shadow: var(--field); padding: 6px 8px; }
+.sort-text { flex: 1; min-width: 0; }
+.sort-btns { display: flex; gap: 4px; flex: none; }
+.sort-btns .btn { min-width: 0; padding: 0 8px; min-height: 22px; }
+.act-done { color: var(--sh); margin: 8px 0 0; }
+
+/* —— 结局：黑屏 + 文字 + 标题卡 —— */
+.ending { position: fixed; inset: 0; z-index: 200; background: #000; color: #d8d8d8; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; padding: 40px; text-align: center; }
+.ending-lines { max-width: 760px; display: flex; flex-direction: column; gap: 14px; }
+.ending-lines p { margin: 0; animation: ending-in 1.2s both; }
+.ending-title { font-size: 40px; font-weight: normal; letter-spacing: 6px; opacity: 0; transition: opacity 1.6s; margin: 0; color: #fff; }
+.ending-title.show { opacity: 1; }
+.ending-terminal { margin: 0; color: #7fe08a; }
+@keyframes ending-in { from { opacity: 0; } to { opacity: 1; } }

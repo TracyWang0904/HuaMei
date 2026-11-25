@@ -4,7 +4,7 @@ import { makeDraggable } from '../ui/drag.js';
 import { t } from '../core/i18n.js';
 import { nowParts } from '../core/clock.js';
 import * as S from '../core/state.js';
-import { applyEffects } from '../core/effects.js';
+import { applyEffects, meets } from '../core/effects.js';
 import { computers, resolveApp } from '../core/data.js';
 import { puzzlePanel } from '../puzzle/puzzle-panel.js';
 import { openNotebook } from '../notebook/notebook-ui.js';
@@ -89,16 +89,42 @@ export function openWorkstation(computerId) {
   return { close };
 }
 
+// 应用窗口。条目可以：
+//   lock        带一道密码（日记分卷），解开前只显示密码框
+//   appendIf    满足条件才追加的一行（比如带走了录音笔才出现的日志）
+//   actions     条目下面的按钮（比如办公桌电子锁的“解锁”），点一次生效
 function appWindow(app, comp) {
   const entries = app.entries ?? [];
   const view = h('div', { class: 'entry' });
   let current;
-  const show = (e, btn) => {
-    markRead(`${comp.id}/${app.id}/${e.id}`);
-    current?.classList.remove('sel'); current = btn; btn?.classList.add('sel');
-    view.replaceChildren(
+
+  const body = (e) => {
+    const done = (id) => S.get().flags.includes(`act:${id}`);
+    // 做过某个操作之后，条目内容换成操作完成后的文字
+    let text = (e.actions ?? []).find((a) => done(a.id) && a.doneText)?.doneText ?? e.text;
+    for (const extra of e.appendIf ?? []) if (meets(extra.when)) text += `\n${extra.text}`;
+    return [
       e.title ? h('h3', {}, e.title) : null,
-      richText(e.text, { source: e.source ?? app.name }));
+      richText(text, { source: e.source ?? app.name }),
+      ...(e.actions ?? []).map((a) => {
+        if (done(a.id)) return null;
+        const btn = h('button', {
+          type: 'button', class: 'btn',
+          onclick: () => { applyEffects([...(a.effects ?? []), { flag: `act:${a.id}` }]); show(e, current); },
+        }, a.label);
+        return h('div', { class: 'btn-row' }, btn);
+      }),
+    ].filter(Boolean);
+  };
+
+  const show = (e, btn) => {
+    current?.classList.remove('sel'); current = btn; btn?.classList.add('sel');
+    if (e.lock && !S.get().solved.includes(e.lock.id)) {
+      view.replaceChildren(h('h3', {}, e.title ?? ''), puzzlePanel(e.lock, { onSolved: () => setTimeout(() => show(e, current), 500) }));
+      return;
+    }
+    markRead(`${comp.id}/${app.id}/${e.id}`);
+    view.replaceChildren(...body(e));
   };
   const btns = entries.map((e) => h('button', { type: 'button', onclick: (ev) => show(e, ev.currentTarget) }, e.title ?? e.id));
   const list = entries.length > 1 ? h('div', { class: 'entry-list' }, btns) : null;

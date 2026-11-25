@@ -1,0 +1,22 @@
+{
+  "id": "b1-elevator",
+  "name": "电梯厅",
+  "intro": "B1 的电梯厅。",
+  "hotspots": [
+    {
+      "type": "goto",
+      "id": "to-b2",
+      "label": "电梯面板（B2）",
+      "requiresItem": {
+        "id": "jq-card-old",
+        "message": "请刷卡。"
+      },
+      "effects": [
+        {
+          "goto": "ch5-lab"
+        }
+      ],
+      "svgId": "hs-to-b2"
+    }
+  ]
+}
