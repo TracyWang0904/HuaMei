@@ -57,5 +57,6 @@
       "svgId": "hs-monitor"
     }
   ],
-  "scene": "ch1-duty"
+  "scene": "ch1-duty",
+  "flicker": true
 }
