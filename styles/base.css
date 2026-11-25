@@ -125,5 +125,5 @@ input:focus, textarea:focus { outline: none; }
 
 /* —— 鼠标：千禧年像素光标。热点在箭头尖 / 手指尖 —— */
 html, body, #app, .stage, .modal-overlay, .win98, .btn, input, textarea, .titlebar, .scene-art, .scene-art svg { cursor: url("/assets/img/ui/cursor-arrow.png") 0 0, default; }
-button, .word, .dicon, .tb-btn, .entry-list button, .start-menu li button, label, .scene-art .hs, .scene-art .hs * { cursor: url("/assets/img/ui/cursor-hand.png") 13 0, pointer; }
+button, .word, .dicon, .tb-btn, .entry-list button, .start-menu li button, label, .scene-art .hs, .scene-art .hs * { cursor: url("/assets/img/ui/cursor-hand.png") 9 0, pointer; }
 input[type=text], textarea { cursor: text; }
