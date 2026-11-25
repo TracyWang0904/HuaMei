@@ -143,3 +143,18 @@ input[type=text], textarea { cursor: text; }
 .ending-title.show { opacity: 1; }
 .ending-terminal { margin: 0; color: #7fe08a; }
 @keyframes ending-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* —— 终端风格（门禁键盘）：黑底、绿色细框、绿色字 —— */
+.modal-win.terminal { background: #000; box-shadow: none; border: 2px solid #2cff5a; padding: 0; color: #2cff5a; width: min(380px, calc(100% - 32px)); }
+.modal-win.terminal .titlebar { background: #000; color: #2cff5a; border-bottom: 1px solid #2cff5a; font-weight: normal; padding: 3px 8px; }
+.modal-win.terminal .tb-btn { background: #000; color: #2cff5a; box-shadow: none; border: 1px solid #2cff5a; }
+.modal-win.terminal .win-content { padding: 14px 16px 16px; }
+.term, .term * { text-shadow: 0 0 6px rgba(44,255,90,.55); }
+.term .field span { color: #2cff5a; text-align: left; min-width: 0; }
+.term .field span::before { content: "> "; }
+.term input[type=text] { background: #000; color: #2cff5a; box-shadow: none; border: 1px solid #2cff5a; caret-color: #2cff5a; border-radius: 0; }
+.term .btn { background: #000; color: #2cff5a; box-shadow: none; border: 1px solid #2cff5a; }
+.term .btn:hover, .term .btn:focus-visible { background: #2cff5a; color: #000; text-shadow: none; outline: none; }
+.term .btn:active { padding: 3px 14px; }
+.term-line { margin: 10px 0 0; }
+.term-line.err { color: #7dff9c; }
