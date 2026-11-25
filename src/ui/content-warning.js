@@ -1,15 +1,12 @@
-import { h } from './dom.js';
-import { openModal } from './modal.js';
+import { openMsgBox } from './modal.js';
 import { t } from '../core/i18n.js';
 import * as S from '../core/state.js';
 
+// 开场内容提示：必须点确认才能进入
 export function ensureContentAck(then) {
   if (S.get().contentAck) return then();
-  const m = openModal({
-    title: t('warn.title'),
-    body: [h('p', {}, t('warn.body')),
-      h('button', { type: 'button', onclick: () => { S.update((s) => { s.contentAck = true; }); m.close(); } }, t('warn.confirm'))],
-    onClose: () => { if (S.get().contentAck) then(); },
+  openMsgBox({
+    title: t('warn.title'), text: t('warn.body'), kind: 'warning', okLabel: t('warn.confirm'), closable: false,
+    onOk: () => { S.update((s) => { s.contentAck = true; }); then(); },
   });
-  m.el.querySelector('header button').remove(); // 必须点“确认”才能进入
 }

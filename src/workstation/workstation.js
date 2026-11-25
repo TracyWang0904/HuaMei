@@ -1,5 +1,8 @@
 import { h, richText } from '../ui/dom.js';
+import { icon, appIcon } from '../ui/icons.js';
+import { makeDraggable } from '../ui/drag.js';
 import { t } from '../core/i18n.js';
+import { nowParts } from '../core/clock.js';
 import * as S from '../core/state.js';
 import { applyEffects } from '../core/effects.js';
 import { computers, resolveApp } from '../core/data.js';
@@ -7,31 +10,43 @@ import { puzzlePanel } from '../puzzle/puzzle-panel.js';
 import { openNotebook } from '../notebook/notebook-ui.js';
 import { markRead } from '../ui/doc-viewer.js';
 
-// BN内网工作站：锁屏登录 → 桌面（图标、可拖动窗口、开始菜单）
+// BN内网工作站：点开电脑后弹出一个小窗口，里面是登录框 → 桌面（图标、可拖动窗口、开始菜单）
 export function openWorkstation(computerId) {
   const comp = computers[computerId];
-  const root = h('div', { class: 'ws' });
-  document.body.append(root);
-  const close = () => root.remove();
+  const existing = document.querySelector(`.ws[data-comp="${computerId}"]`);
+  if (existing) { existing.remove(); }
 
-  const header = h('header', { class: 'ws-bar' },
-    h('strong', {}, `${t('ws.title')} · ${comp.name}`),
-    h('span', { class: 'sp' }),
-    h('button', { type: 'button', onclick: openNotebook }, t('nav.notebook')),
-    h('button', { type: 'button', onclick: close }, t('ws.exit')));
+  const body = h('div', { class: 'ws-body' });
+  const close = () => { win.remove(); clearInterval(timer); };
+  const bar = h('div', { class: 'titlebar' },
+    h('span', { class: 'title' }, `${t('ws.title')} - ${comp.name}`),
+    h('button', { type: 'button', class: 'tb-btn', 'aria-label': t('ws.exit'), onclick: close }, '×'));
+  const win = h('div', { class: 'win98 ws', 'data-comp': computerId }, bar, body);
+  makeDraggable(win, bar);
+  document.body.append(win);
+
+  const clock = h('span', { class: 'tray' });
+  const tick = () => {
+    if (!win.isConnected) { clearInterval(timer); return; }
+    const { hour, minute } = nowParts();
+    clock.textContent = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+  };
+  const timer = setInterval(tick, 5000);
+  tick();
 
   const needLogin = () => comp.login && !S.get().loggedIn.includes(comp.id);
 
   function render() {
-    root.replaceChildren(header, needLogin() ? loginView() : desktopView());
+    body.replaceChildren(needLogin() ? loginView() : desktopView());
   }
 
   function loginView() {
-    const puzzle = comp.login;
-    return h('div', { class: 'login' },
-      h('h2', {}, t('ws.title')),
-      comp.owner ? h('p', {}, t('ws.owner', { name: comp.owner })) : null,
-      puzzlePanel(puzzle, { onSolved: () => { applyEffects([{ login: comp.id }]); setTimeout(render, 400); } }));
+    const dlg = h('div', { class: 'win98 login-dlg' },
+      h('div', { class: 'titlebar' }, h('span', { class: 'title' }, t('ws.title'))),
+      h('div', { class: 'win-content' },
+        comp.owner ? h('p', {}, t('ws.owner', { name: comp.owner })) : null,
+        puzzlePanel(comp.login, { onSolved: () => { applyEffects([{ login: comp.id }]); setTimeout(render, 500); } })));
+    return h('div', { class: 'desktop' }, h('div', { class: 'center-fill' }, dlg));
   }
 
   function desktopView() {
@@ -41,28 +56,33 @@ export function openWorkstation(computerId) {
 
     const openApp = (app) => {
       if (app.special === 'notebook') return openNotebook();
-      const existing = windows.querySelector(`[data-app="${app.id}"]`);
-      if (existing) { existing.style.zIndex = ++z; return; }
-      const win = appWindow(app, comp);
-      win.dataset.app = app.id;
-      win.style.left = `${24 + (count % 6) * 28}px`;
-      win.style.top = `${16 + (count % 6) * 28}px`;
-      win.style.zIndex = ++z;
+      const existingWin = windows.querySelector(`[data-app="${app.id}"]`);
+      if (existingWin) { existingWin.style.zIndex = ++z; return; }
+      const w = appWindow(app, comp);
+      w.dataset.app = app.id;
+      w.style.left = `${24 + (count % 6) * 28}px`;
+      w.style.top = `${16 + (count % 6) * 28}px`;
+      w.style.zIndex = ++z;
       count++;
-      win.addEventListener('pointerdown', () => { win.style.zIndex = ++z; });
-      windows.append(win);
+      w.addEventListener('pointerdown', () => { w.style.zIndex = ++z; });
+      windows.append(w);
     };
 
     const icons = h('div', { class: 'icons' }, apps.map((a) =>
-      h('button', { type: 'button', class: 'icon', onclick: () => openApp(a) }, h('span', { class: 'glyph' }, '▣'), a.name)));
+      h('button', { type: 'button', class: 'dicon', onclick: () => openApp(a) }, icon(appIcon(a), 32), h('span', {}, a.name))));
 
-    const menu = h('ul', { class: 'start-menu', hidden: true },
-      apps.map((a) => h('li', {}, h('button', { type: 'button', onclick: () => { menu.hidden = true; openApp(a); } }, a.name))),
-      h('li', {}, h('button', { type: 'button', onclick: close }, t('ws.exit'))));
-    const taskbar = h('footer', { class: 'taskbar' },
-      h('button', { type: 'button', onclick: () => { menu.hidden = !menu.hidden; } }, t('ws.start')), menu);
+    const menu = h('div', { class: 'start-menu', hidden: true },
+      h('div', { class: 'banner' }, h('span', {}, 'BN内网')),
+      h('ul', {},
+        apps.map((a) => h('li', {}, h('button', { type: 'button', onclick: () => { menu.hidden = true; openApp(a); } }, icon(appIcon(a), 24), a.name))),
+        h('li', { class: 'sep' }),
+        h('li', {}, h('button', { type: 'button', onclick: close }, icon('computer', 24), t('ws.exit')))));
+    const startBtn = h('button', { type: 'button', class: 'btn start', onclick: () => { menu.hidden = !menu.hidden; } }, icon('flag', 16), t('ws.start'));
+    const taskbar = h('div', { class: 'taskbar' }, startBtn, h('span', { class: 'sp' }), clock, menu);
+    // 点开始菜单以外的地方收起菜单
+    windows.addEventListener('pointerdown', () => { menu.hidden = true; });
 
-    return h('div', { class: 'desktop' }, icons, windows, taskbar);
+    return h('div', { class: 'desktop-wrap' }, h('div', { class: 'desktop' }, icons, windows), taskbar);
   }
 
   render();
@@ -72,28 +92,21 @@ export function openWorkstation(computerId) {
 function appWindow(app, comp) {
   const entries = app.entries ?? [];
   const view = h('div', { class: 'entry' });
-  const show = (e) => {
+  let current;
+  const show = (e, btn) => {
     markRead(`${comp.id}/${app.id}/${e.id}`);
+    current?.classList.remove('sel'); current = btn; btn?.classList.add('sel');
     view.replaceChildren(
       e.title ? h('h3', {}, e.title) : null,
-      h('div', { class: 'paper' }, richText(e.text, { source: e.source ?? app.name })));
+      richText(e.text, { source: e.source ?? app.name }));
   };
-  const list = entries.length > 1
-    ? h('ul', { class: 'entry-list' }, entries.map((e) => h('li', {}, h('button', { type: 'button', onclick: () => show(e) }, e.title ?? e.id))))
-    : null;
-  if (entries[0]) show(entries[0]);
+  const btns = entries.map((e) => h('button', { type: 'button', onclick: (ev) => show(e, ev.currentTarget) }, e.title ?? e.id));
+  const list = entries.length > 1 ? h('div', { class: 'entry-list' }, btns) : null;
+  if (entries[0]) show(entries[0], btns[0]);
 
-  const bar = h('div', { class: 'win-bar' }, h('span', {}, app.name), h('button', { type: 'button', onclick: () => win.remove() }, '×'));
-  const win = h('div', { class: 'win' }, bar, h('div', { class: 'win-body' }, list, view));
-
-  // 拖动窗口（手机上 CSS 把窗口改成全屏，拖动无效）
-  bar.addEventListener('pointerdown', (ev) => {
-    if (ev.target.tagName === 'BUTTON') return;
-    const dx = ev.clientX - win.offsetLeft, dy = ev.clientY - win.offsetTop;
-    const move = (m) => { win.style.left = `${m.clientX - dx}px`; win.style.top = `${Math.max(0, m.clientY - dy)}px`; };
-    const up = () => { document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', up); };
-    document.addEventListener('pointermove', move);
-    document.addEventListener('pointerup', up);
-  });
+  const bar = h('div', { class: 'titlebar' }, icon(appIcon(app), 16), h('span', { class: 'title' }, app.name),
+    h('button', { type: 'button', class: 'tb-btn', onclick: () => win.remove() }, '×'));
+  const win = h('div', { class: 'win98 appwin' }, bar, h('div', { class: 'appwin-body' }, list, view));
+  makeDraggable(win, bar);
   return win;
 }

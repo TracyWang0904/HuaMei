@@ -25,7 +25,7 @@ export function mapView(onEnter) {
       h('div', { class: 'places' }, f.places.map((p) => {
         const open = isUnlocked(p.id);
         return h('button', {
-          type: 'button', disabled: !open, class: p.id === cur ? 'here' : '',
+          type: 'button', disabled: !open, class: 'btn' + (p.id === cur ? ' default' : ''),
           onclick: () => onEnter(p.id),
         }, open ? p.name : t('map.locked'));
       })))));
@@ -84,6 +84,6 @@ function activate(place, hs, rerender) {
 
 function hotspotButton(place, hs, rerender) {
   const done = isDone(hs);
-  return h('button', { type: 'button', class: 'hotspot' + (done ? ' done' : ''), onclick: () => activate(place, hs, rerender) },
+  return h('button', { type: 'button', class: 'btn hotspot' + (done ? ' done' : ''), onclick: () => activate(place, hs, rerender) },
     done && hs.solvedLabel ? hs.solvedLabel : hs.label);
 }

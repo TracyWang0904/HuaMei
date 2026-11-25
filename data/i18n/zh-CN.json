@@ -14,7 +14,7 @@
   "common.close": "关闭",
   "warn.title": "内容提示",
   "warn.body": "本作含有死亡、战争、自杀、遗体与肢体残骸的描写。",
-  "warn.confirm": "我已了解，进入",
+  "warn.confirm": "确定",
   "map.title": "基地平面图",
   "map.locked": "？？？",
   "scene.placeholder": "［场景图占位：{name}］",
@@ -32,5 +32,6 @@
   "puzzle.wrong": "密码错误",
   "puzzle.solved": "已通过",
   "puzzle.pwHint": "密码提示：{hint}",
-  "nav.settings": "设置"
+  "nav.settings": "设置",
+  "save.title": "设置"
 }
