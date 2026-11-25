@@ -1,8 +1,13 @@
 /* 千禧年（Windows 95/98）风格：灰色窗体、蓝色标题栏、凸起/凹陷的 3D 边框、像素字体 */
+@font-face {
+  font-family: "Ark Pixel";
+  src: url("/assets/fonts/ark-pixel-12px-zh_hans.woff2") format("woff2");
+  font-display: block;
+}
 :root {
   --face: #c0c0c0; --hi: #fff; --lt: #dfdfdf; --sh: #808080; --dk: #0a0a0a;
   --navy: #000080; --teal: #008080;
-  /* 像素字体：见 LICENSES.md；没装时退回系统等宽字体 */
+  /* 像素字体：方舟像素字体 12px，见 LICENSES.md */
   --font: "Ark Pixel", "Fusion Pixel", "Zpix", ui-monospace, Menlo, Consolas, monospace;
   --raised: inset -1px -1px var(--dk), inset 1px 1px var(--hi), inset -2px -2px var(--sh), inset 2px 2px var(--lt);
   --pressed: inset -1px -1px var(--hi), inset 1px 1px var(--dk), inset -2px -2px var(--lt), inset 2px 2px var(--sh);
