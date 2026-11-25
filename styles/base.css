@@ -11,7 +11,7 @@ h2, h3 { margin: .6em 0 .3em; font-weight: normal; }
 .sp { flex: 1; }
 .row { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
 .topbar, .ws-bar { display: flex; gap: 8px; align-items: center; padding: 8px 16px; border-bottom: 1px solid var(--line); background: var(--panel); }
-#app > main { padding: 16px; max-width: 760px; margin: 0 auto; }
+#app > main { padding: 16px; max-width: 1280px; margin: 0 auto; }
 
 .paper { white-space: pre-wrap; background: #1b1a16; color: #d8d2bf; border: 1px solid #3a372c; padding: 12px 14px; margin: 8px 0; }
 .paper.mirror { transform: scaleX(-1); }
@@ -20,6 +20,16 @@ h2, h3 { margin: .6em 0 .3em; font-weight: normal; }
 .word.collected { border-bottom-style: solid; color: #d8d2bf; opacity: .75; }
 
 .scene-img { height: 160px; display: grid; place-items: center; border: 1px dashed var(--line); margin: 8px 0; opacity: .6; }
+.scene-art { margin: 8px 0; line-height: 0; border: 1px solid var(--line); }
+.scene-art svg { width: 100%; height: auto; display: block; }
+/* SVG 场景：只有标了热点的物件可点，其余（氛围层、暗角）不拦截鼠标 */
+.scene-art svg * { pointer-events: none; }
+.scene-art .hs, .scene-art .hs * { pointer-events: auto; }
+.scene-art .hs { cursor: pointer; outline: none; }
+.scene-art .hs:hover, .scene-art .hs:focus-visible { filter: brightness(1.35) drop-shadow(0 0 6px #6fb3d9); }
+.scene-art .hs.done { opacity: .75; }
+.items { margin: 8px 0; }
+.items summary { cursor: pointer; opacity: .8; }
 .hotspots, .places { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
 .hotspot.done { opacity: .6; }
 .places .here { border-color: var(--accent); }
@@ -54,13 +64,5 @@ h2, h3 { margin: .6em 0 .3em; font-weight: normal; }
 .start-menu[hidden] { display: none; }
 .start-menu button { width: 100%; text-align: left; border: 0; }
 
-/* 手机：桌面窗口改为全屏层叠，不用拖动 */
-@media (max-width: 700px) {
-  .win { left: 0 !important; top: 0 !important; width: 100%; height: calc(100% - 44px); max-height: none; }
-  .win-body { flex-direction: column; flex: 1; }
-  .entry-list { border-right: 0; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4px; }
-  .entry-list button { width: auto; }
-  .login { margin-top: 4vh; }
-}
 .topbar button, .ws-bar button { white-space: nowrap; }
 .ws-bar strong { font-size: .9em; }

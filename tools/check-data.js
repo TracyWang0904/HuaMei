@@ -30,6 +30,16 @@ function check(file) {
       }
     }
   })(data, '$');
+  if (data.scene && Array.isArray(data.hotspots)) {
+    const svgPath = new URL(`../assets/img/scenes/${data.scene}.svg`, import.meta.url).pathname;
+    let svg = '';
+    try { svg = readFileSync(svgPath, 'utf8'); } catch { fail(file, `找不到场景图 ${data.scene}.svg`); }
+    for (const hs of data.hotspots) {
+      for (const id of [].concat(hs.svgId ?? [])) {
+        if (svg && !svg.includes(`id="${id}"`)) fail(file, `场景图里没有 id="${id}"`);
+      }
+    }
+  }
   if (raw.includes('TODO')) console.warn(`! ${relative(root, file)} 含 TODO`);
 }
 

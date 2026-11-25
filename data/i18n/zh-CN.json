@@ -32,5 +32,6 @@
   "puzzle.hint": "提示",
   "puzzle.wrong": "密码错误",
   "puzzle.solved": "已通过",
-  "puzzle.pwHint": "密码提示：{hint}"
+  "puzzle.pwHint": "密码提示：{hint}",
+  "scene.items": "物品列表"
 }

@@ -8,7 +8,7 @@
       { "key": "user", "label": "用户名", "maxLength": 12, "answerHash": "a38160d03405e13ab8e906bb9465d1ad7c1ea0ff52691dca195fa99d3b8795ff" },
       { "key": "pass", "label": "密  码", "maxLength": 4, "numeric": true, "answerHash": "acbb76bcd1ac15f66a69f7a128b06b860c50c7d980693228650cf805974a6aca" }
     ],
-    "hints": [ "这台电脑最后是谁在用？", "显示器背后好像贴着什么。" ]
+    "hints": [ "这台电脑最后是谁在用？", "显示器侧面好像贴着什么。" ]
   },
   "apps": [
     { "shared": "news-0622" },
