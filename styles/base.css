@@ -20,9 +20,10 @@ h2, h3 { margin: .6em 0 .3em; font-weight: normal; }
 .hud-btn { background: rgba(8,12,16,.55); border: 1px solid rgba(111,179,217,.35); padding: 3px 10px; font-size: 13px; line-height: 1.5; backdrop-filter: blur(2px); }
 .hud-btn:hover { background: rgba(22,36,50,.85); border-color: var(--accent); }
 .hud-name { opacity: .8; }
-.caption { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 15; width: min(760px, calc(100% - 40px)); padding: 10px 40px 10px 16px; background: rgba(8,12,16,.78); border: 1px solid var(--line); white-space: pre-wrap; }
+.caption { position: fixed; left: 50%; top: 52px; transform: translateX(-50%); z-index: 15; width: min(620px, calc(100% - 40px)); padding: 10px 40px 10px 16px; background: rgba(8,12,16,.78); border: 1px solid var(--line); white-space: pre-wrap; }
+.caption { pointer-events: none; }
 .caption[hidden] { display: none; }
-.caption-close { position: absolute; top: 4px; right: 6px; border: 0; background: none; }
+.caption-close { pointer-events: auto; position: absolute; top: 4px; right: 6px; border: 0; background: none; }
 
 .paper { white-space: pre-wrap; background: #1b1a16; color: #d8d2bf; border: 1px solid #3a372c; padding: 12px 14px; margin: 8px 0; }
 .paper.mirror { transform: scaleX(-1); }

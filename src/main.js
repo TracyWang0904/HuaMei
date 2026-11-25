@@ -14,6 +14,7 @@ document.title = t('app.title');
 
 const stage = h('main', { class: 'stage' });
 const caption = h('div', { class: 'caption', hidden: true });
+let captionTimer;
 const placeName = h('button', { type: 'button', class: 'hud-btn hud-name', onclick: () => { caption.hidden = !caption.hidden; } });
 
 function currentPlace() {
@@ -33,6 +34,8 @@ function show({ fade = false } = {}) {
       h('button', { type: 'button', class: 'caption-close', onclick: () => { caption.hidden = true; } }, '×'),
       richText(place.intro, { source: place.name }));
     caption.hidden = false;
+    clearTimeout(captionTimer);
+    captionTimer = setTimeout(() => { caption.hidden = true; }, 8000); // 描述放在顶部，8 秒后自动收起，不挡场景
     stage.classList.remove('out');
   };
   if (!fade) return build();
