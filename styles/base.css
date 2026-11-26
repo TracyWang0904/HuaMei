@@ -78,12 +78,6 @@ input:focus, textarea:focus { outline: none; }
 .stage { position: absolute; inset: 0; transition: opacity .22s; }
 .stage.out { opacity: 0; }
 .scene-art { position: absolute; inset: 0; line-height: 0; background: #05080b; }
-.scene-art svg { width: 100%; height: 100%; display: block; }
-/* 只有标了热点的物件可点，其余（氛围层、暗角）不拦截鼠标 */
-.scene-art svg * { pointer-events: none; }
-.scene-art .hs, .scene-art .hs * { pointer-events: auto; }
-.scene-art .hs { cursor: pointer; outline: none; }
-.scene-art .hs.done { opacity: .75; }
 .scene-art.placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; line-height: 1.4; color: #b8c7d6; }
 .scene-art.placeholder p { margin: 0; }
 .scene-art.placeholder .hotspots { justify-content: center; max-width: 720px; }
@@ -123,8 +117,8 @@ input:focus, textarea:focus { outline: none; }
 .start-menu li button:hover, .start-menu li button:focus-visible { background: var(--navy); color: #fff; outline: none; }
 
 /* —— 鼠标：千禧年像素光标。热点在箭头尖 / 手指尖 —— */
-html, body, #app, .stage, .modal-overlay, .win98, .btn, input, textarea, .titlebar, .scene-art, .scene-art svg { cursor: url("/assets/img/ui/cursor-arrow.png") 0 0, default; }
-button, .word, .dicon, .tb-btn, .entry-list button, .start-menu li button, label, .scene-art .hs, .scene-art .hs * { cursor: url("/assets/img/ui/cursor-hand.png") 9 0, pointer; }
+html, body, #app, .stage, .modal-overlay, .win98, .btn, input, textarea, .titlebar, .scene-art { cursor: url("/assets/img/ui/cursor-arrow.png") 0 0, default; }
+button, .word, .dicon, .tb-btn, .entry-list button, .start-menu li button, label { cursor: url("/assets/img/ui/cursor-hand.png") 9 0, pointer; }
 input[type=text], textarea { cursor: text; }
 
 /* —— 排序谜题 / 条目按钮 —— */
