@@ -8,6 +8,7 @@ import { applyEffects, meets } from '../core/effects.js';
 import { computers, resolveApp } from '../core/data.js';
 import { puzzlePanel } from '../puzzle/puzzle-panel.js';
 import { openNotebook } from '../notebook/notebook-ui.js';
+import { bringToFront } from '../ui/window.js';
 import { markRead } from '../ui/doc-viewer.js';
 
 // BN内网工作站：点开电脑后弹出一个小窗口，里面是登录框 → 桌面（图标、可拖动窗口、开始菜单）
@@ -23,6 +24,8 @@ export function openWorkstation(computerId) {
     h('button', { type: 'button', class: 'tb-btn', 'aria-label': t('ws.exit'), onclick: close }, '×'));
   const win = h('div', { class: 'win98 ws', 'data-comp': computerId }, bar, body);
   makeDraggable(win, bar);
+  bringToFront(win);
+  win.addEventListener('pointerdown', () => bringToFront(win));
   document.body.append(win);
 
   const clock = h('span', { class: 'tray' });

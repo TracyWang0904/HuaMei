@@ -74,15 +74,6 @@ input:focus, textarea:focus { outline: none; }
 .hints { margin-top: 10px; }
 .hint { margin: 4px 0; padding: 4px 8px; background: #ffffe1; border: 1px solid #000; }
 
-/* —— 场景 —— */
-.stage { position: absolute; inset: 0; transition: opacity .22s; }
-.stage.out { opacity: 0; }
-.scene-art { position: absolute; inset: 0; line-height: 0; background: #05080b; }
-.scene-art.placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; line-height: 1.4; color: #b8c7d6; }
-.scene-art.placeholder p { margin: 0; }
-.scene-art.placeholder .hotspots { justify-content: center; max-width: 720px; }
-.hud { position: fixed; top: 8px; right: 8px; z-index: 60; display: flex; gap: 4px; }
-.hud .btn { min-width: 0; padding: 1px 10px; min-height: 22px; }
 
 /* —— 工作站：桌面上弹出的小窗口 —— */
 .ws { position: fixed; inset: 0; margin: auto; z-index: 50; width: min(940px, calc(100% - 32px)); height: min(620px, calc(100% - 32px)); display: flex; flex-direction: column; }
@@ -117,8 +108,8 @@ input:focus, textarea:focus { outline: none; }
 .start-menu li button:hover, .start-menu li button:focus-visible { background: var(--navy); color: #fff; outline: none; }
 
 /* —— 鼠标：千禧年像素光标。热点在箭头尖 / 手指尖 —— */
-html, body, #app, .stage, .modal-overlay, .win98, .btn, input, textarea, .titlebar, .scene-art { cursor: url("/assets/img/ui/cursor-arrow.png") 0 0, default; }
-button, .word, .dicon, .tb-btn, .entry-list button, .start-menu li button, label { cursor: url("/assets/img/ui/cursor-hand.png") 9 0, pointer; }
+html, body, #app, .modal-overlay, .win98, .btn, input, textarea, .titlebar, .rdesk, .fwin { cursor: url("/assets/img/ui/cursor-arrow.png") 0 0, default; }
+button, .word, .dicon, .tb-btn, .entry-list button, .start-menu li button, label, .ficon-btn, .ftask-btn, .btab, .tlink, .cthread, .fclose { cursor: url("/assets/img/ui/cursor-hand.png") 9 0, pointer; }
 input[type=text], textarea { cursor: text; }
 
 /* —— 排序谜题 / 条目按钮 —— */
@@ -152,3 +143,58 @@ input[type=text], textarea { cursor: text; }
 .term .btn:active { padding: 3px 14px; }
 .term-line { margin: 10px 0 0; }
 .term-line.err { color: #7dff9c; }
+
+/* —— 基地内网：非模态窗口、门户、终端页 —— */
+.xwin { position: fixed; max-height: calc(100% - 60px); display: flex; flex-direction: column; }
+.xbody { margin-top: 3px; overflow: auto; background: var(--face); padding: 8px; }
+.portal .map section { margin-bottom: 8px; }
+.portal h3 { margin: 0 0 6px; font-size: 1em; }
+.places, .hotspots { display: flex; flex-wrap: wrap; gap: 6px; }
+.btn.tiny { min-width: 0; min-height: 0; padding: 0 8px; margin-left: 10px; }
+.btn.hotspot.done { color: var(--sh); }
+.nb ul { margin: 4px 0; padding-left: 18px; }
+.nb h3 { margin: 10px 0 2px; font-size: 1em; }
+.empty { color: var(--sh); margin: 4px 0; }
+
+/* —— 记者的电脑：现代扁平风，和基地内网的千禧年风格形成对比 —— */
+.rdesk { position: absolute; inset: 0 0 44px 0; background: linear-gradient(160deg, #e8eef6 0%, #cfdbea 55%, #b9c9de 100%); font-family: system-ui, "PingFang SC", "Noto Sans SC", sans-serif; }
+.ficons { position: absolute; top: 16px; left: 16px; display: flex; flex-direction: column; gap: 14px; }
+.ficon-btn { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; width: 84px; padding: 6px 2px; background: none; border: 0; border-radius: 10px; color: #1f2a37; font: 13px/1.2 system-ui, "PingFang SC", sans-serif; }
+.ficon-btn:hover { background: rgba(255,255,255,.55); }
+.ficon { display: inline-flex; }
+.badge { position: absolute; top: 2px; right: 14px; width: 11px; height: 11px; border-radius: 50%; background: #ef4444; border: 2px solid #fff; }
+.ftask-btn .badge { top: 3px; right: 4px; width: 9px; height: 9px; }
+.badge[hidden] { display: none; }
+.ftask { position: fixed; left: 0; right: 0; bottom: 0; height: 44px; z-index: 150; display: flex; align-items: center; gap: 4px; padding: 0 10px; background: rgba(250,252,255,.92); border-top: 1px solid #c3cfdd; font: 13px system-ui, "PingFang SC", sans-serif; color: #1f2a37; }
+.ftask-btn { position: relative; display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: none; border: 0; border-radius: 8px; font: inherit; color: inherit; }
+.ftask-btn:hover { background: rgba(0,0,0,.06); }
+.fclock { padding: 0 6px; color: #475569; }
+.fwin { position: fixed; background: #fff; border-radius: 10px; box-shadow: 0 10px 40px rgba(15,23,42,.28), 0 0 0 1px rgba(15,23,42,.1); overflow: hidden; display: flex; flex-direction: column; max-height: calc(100% - 70px); font: 14px/1.6 system-ui, "PingFang SC", "Noto Sans SC", sans-serif; color: #1f2a37; }
+.fbar { display: flex; align-items: center; gap: 8px; height: 34px; padding: 0 8px 0 14px; background: #f1f5f9; border-bottom: 1px solid #dbe3ec; font-weight: 600; user-select: none; }
+.fbar .title { flex: 1; }
+.fclose { width: 26px; height: 26px; border: 0; border-radius: 6px; background: none; font-size: 18px; line-height: 1; color: #475569; }
+.fclose:hover { background: #e2e8f0; }
+.fbody { overflow: auto; min-height: 0; }
+.fwin .word { color: #2563eb; border-bottom: 1px dashed #2563eb; }
+.fwin .word.collected { color: #7c3aed; border-bottom: 1px solid #7c3aed; }
+.btabs { display: flex; gap: 4px; padding: 8px 12px 0; border-bottom: 1px solid #e2e8f0; }
+.btab { padding: 6px 14px; background: none; border: 0; border-bottom: 2px solid transparent; font: inherit; color: #64748b; }
+.btab.on { color: #1d4ed8; border-bottom-color: #1d4ed8; }
+.bpage { padding: 14px 18px 18px; }
+.bpage h2 { font-size: 20px; margin: 0 0 10px; line-height: 1.4; }
+.bpage h3 { font-size: 14px; margin: 18px 0 4px; color: #64748b; }
+.ptext { white-space: pre-wrap; }
+.threads, .replies { list-style: none; padding: 0; margin: 0; }
+.threads li { padding: 8px 0; border-bottom: 1px solid #eef2f7; display: flex; justify-content: space-between; gap: 12px; }
+.replies li { padding: 6px 0; border-top: 1px solid #eef2f7; color: #475569; }
+.tlink { background: none; border: 0; padding: 0; font: inherit; color: #1d4ed8; text-align: left; }
+.meta { color: #94a3b8; font-size: 12px; white-space: nowrap; }
+.gone { color: #64748b; padding: 30px 0; text-align: center; }
+.chat { display: flex; height: 380px; }
+.clist { width: 170px; flex: none; background: #f8fafc; border-right: 1px solid #e2e8f0; padding: 6px; display: flex; flex-direction: column; gap: 2px; }
+.cthread { text-align: left; padding: 8px 10px; background: none; border: 0; border-radius: 8px; font: inherit; color: inherit; }
+.cthread.on { background: #e0e7ff; }
+.cmsgs { flex: 1; overflow: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+.cmsg { display: flex; flex-direction: column; gap: 2px; }
+.cfrom { font-size: 12px; color: #64748b; }
+.ctext { align-self: flex-start; background: #f1f5f9; padding: 6px 10px; border-radius: 10px; }

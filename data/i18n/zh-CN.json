@@ -1,6 +1,5 @@
 {
   "app.title": "画眉",
-  "nav.map": "地图",
   "nav.notebook": "笔记本",
   "save.export": "导出存档",
   "save.import": "导入存档",
@@ -15,9 +14,6 @@
   "warn.title": "内容提示",
   "warn.body": "本作含有死亡、战争、自杀、遗体与肢体残骸的描写。",
   "warn.confirm": "确定",
-  "map.title": "基地平面图",
-  "map.locked": "？？？",
-  "scene.placeholder": "［场景图占位：{name}］",
   "notebook.title": "笔记本",
   "notebook.words": "收录的词",
   "notebook.items": "道具",
@@ -35,5 +31,20 @@
   "save.title": "设置",
   "puzzle.up": "上移",
   "puzzle.down": "下移",
-  "ending.back": "返回"
+  "ending.back": "返回",
+  "portal.locked": "？？？",
+  "shell.app.browser": "浏览器",
+  "shell.app.chat": "聊天",
+  "shell.app.notebook": "笔记本",
+  "shell.app.settings": "设置",
+  "shell.src.news": "新闻",
+  "shell.src.forum": "论坛帖子",
+  "shell.more": "相关阅读",
+  "shell.back": "返回",
+  "shell.thread.empty": "（帖子内容已折叠）",
+  "shell.intranet.title": "BN内网 - 接入",
+  "shell.portal.title": "BN内网门户",
+  "shell.connecting": "正在接入 {name} 终端……",
+  "shell.term.title": "终端 - {name}",
+  "notebook.open": "打开"
 }
