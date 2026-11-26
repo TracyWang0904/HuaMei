@@ -56,7 +56,7 @@ let bad = 0;
 const check = (ok, msg) => { if (!ok) { bad++; console.error('✗', msg); } };
 const all = map.floors.flatMap((f) => f.places);
 for (const p of all) check(st.unlocked.has(p.id), `地点走不到：${p.id}`);
-for (const id of Object.keys(computers)) if (id !== 'phone') check(!computers[id].login || st.loggedIn.has(id), `电脑登录不了：${id}`);
+for (const id of Object.keys(computers)) check(!computers[id].login || st.loggedIn.has(id), `电脑登录不了：${id}`);
 for (const k of Object.keys(endings)) check(st.endings.has(k), `结局触发不了：${k}`);
 for (const id of ['jq-card-old', 'commander-card', 'recorder']) check(st.items.has(id), `道具拿不到：${id}`);
 

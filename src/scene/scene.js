@@ -6,13 +6,7 @@ import { openDoc } from '../ui/doc-viewer.js';
 import { openModal, openMsgBox } from '../ui/modal.js';
 import { puzzlePanel } from '../puzzle/puzzle-panel.js';
 import { openWorkstation } from '../workstation/workstation.js';
-import { startClock } from './clock-display.js';
 import { applyEffects, hasItem, meets } from '../core/effects.js';
-import { startFlicker } from './flicker.js';
-
-// 场景图：assets/img/scenes/<scene>.svg，构建时作为文本打包
-// 不急切加载：有的场景图很大（内嵌底图），进入该场景时才加载
-const sceneArt = import.meta.glob('/assets/img/scenes/*.svg', { query: '?raw', import: 'default' });
 
 export const isUnlocked = (placeId) => {
   const info = gameMap.floors.flatMap((f) => f.places).find((p) => p.id === placeId);
@@ -34,14 +28,9 @@ export function mapView(onEnter) {
       })))));
 }
 
-// 场景：满屏的场景图（SVG 里标了 id 的物件可点）。没有图的地点先用占位 + 按钮。
+// 场景（过渡版）：只列出热点按钮；新版会换成“终端页”
 export function sceneView(placeId, rerender) {
-  const place = places[placeId];
-  const load = place.scene && sceneArt[`/assets/img/scenes/${place.scene}.svg`];
-  if (!load) return placeholder(place, rerender);
-  const wrap = h('div', { class: 'scene-art' });
-  load().then((raw) => fillArt(wrap, raw, place, rerender));
-  return wrap;
+  return placeholder(places[placeId], rerender);
 }
 
 function placeholder(place, rerender) {
@@ -50,41 +39,11 @@ function placeholder(place, rerender) {
     h('div', { class: 'hotspots' }, place.hotspots.filter(visible).map((hs) => hotspotButton(place, hs, rerender))));
 }
 
-function fillArt(wrap, raw, place, rerender) {
-  // 先去注释（注释里提到了 <script>），再去掉 SVG 自带的预览脚本：电子钟由游戏时钟驱动
-  wrap.innerHTML = raw.replace(/<!--[\s\S]*?-->/g, '').replace(/<script[\s\S]*?<\/script>/g, '');
-  const svg = wrap.querySelector('svg');
-  svg.removeAttribute('width');
-  svg.removeAttribute('height');
-  for (const hs of place.hotspots) {
-    if (!visible(hs)) continue;
-    for (const id of [].concat(hs.svgId ?? [])) {
-      const el = svg.querySelector(`#${id}`);
-      if (!el) continue;
-      el.classList.add('hs');
-      if (isDone(hs)) el.classList.add('done');
-      el.setAttribute('tabindex', '0');
-      el.setAttribute('role', 'button');
-      el.setAttribute('aria-label', hs.label);
-      el.addEventListener('click', () => activate(place, hs, rerender));
-      el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(place, hs, rerender); } });
-    }
-  }
-  // 状态层：某个谜题解开后才显示（比如开门）
-  for (const st of place.states ?? []) {
-    const el = svg.querySelector(`#${st.svgId}`);
-    if (el && S.get().solved.includes(st.showWhenSolved)) el.style.display = '';
-  }
-  startClock(svg);
-  if (place.flicker) startFlicker(svg);
-}
-
 // 场景要不要重画的“指纹”：哪些热点现在可见、哪些谜题已解开、状态层是否显示。变了才重画。
 export function sceneSignature(placeId) {
   const place = places[placeId];
   return JSON.stringify([
     place.hotspots.filter(visible).map((hs) => [hs.id, isDone(hs)]),
-    (place.states ?? []).map((st) => S.get().solved.includes(st.showWhenSolved)),
     S.get().items.map((i) => i.id),
   ]);
 }
