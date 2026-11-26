@@ -14,6 +14,7 @@ export const computers = byId(
 export const gameMap = mods['/data/map.json'];
 export const notebookIntro = mods['/data/notebook.json'];
 export const endings = mods['/data/endings.json'];
+export const shell = mods['/data/shell.json'];
 
 // 应用可以直接内联，也可以用 { "shared": "<id>" } 引用共用应用（新闻、天气等）
 export const resolveApp = (a) => (a.shared ? sharedApps[a.shared] : a);

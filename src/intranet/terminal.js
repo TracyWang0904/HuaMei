@@ -4,6 +4,7 @@ import * as S from '../core/state.js';
 import { places, gameMap } from '../core/data.js';
 import { openDoc } from '../ui/doc-viewer.js';
 import { openModal, openMsgBox } from '../ui/modal.js';
+import { on } from '../core/events.js';
 import { puzzlePanel } from '../puzzle/puzzle-panel.js';
 import { openWorkstation } from '../workstation/workstation.js';
 import { applyEffects, hasItem, meets } from '../core/effects.js';
@@ -13,40 +14,44 @@ export const isUnlocked = (placeId) => {
   return !!info && (info.initial || S.get().unlockedPlaces.includes(placeId));
 };
 
-// 地图：按楼层列出地点，未解锁的显示“？？？”
-export function mapView(onEnter) {
-  const cur = S.get().currentPlace;
+// 门户的终端列表：按楼层列出，没有权限的显示“？？？”
+export function portalList(onEnter) {
   return h('div', { class: 'map' },
     gameMap.floors.map((f) => h('section', {},
       h('h3', {}, f.name),
       h('div', { class: 'places' }, f.places.filter((p) => !p.hidden || isUnlocked(p.id)).map((p) => {
         const open = isUnlocked(p.id);
         return h('button', {
-          type: 'button', disabled: !open, class: 'btn' + (p.id === cur ? ' default' : ''),
+          type: 'button', disabled: !open, class: 'btn',
           onclick: () => onEnter(p.id),
-        }, open ? p.name : t('map.locked'));
+        }, open ? p.name : t('portal.locked'));
       })))));
 }
 
-// 场景（过渡版）：只列出热点按钮；新版会换成“终端页”
-export function sceneView(placeId, rerender) {
-  return placeholder(places[placeId], rerender);
-}
-
-function placeholder(place, rerender) {
-  return h('div', { class: 'scene-art placeholder' },
-    h('p', {}, t('scene.placeholder', { name: place.name })),
-    h('div', { class: 'hotspots' }, place.hotspots.filter(visible).map((hs) => hotspotButton(place, hs, rerender))));
-}
-
-// 场景要不要重画的“指纹”：哪些热点现在可见、哪些谜题已解开、状态层是否显示。变了才重画。
-export function sceneSignature(placeId) {
+// 终端页：一个地点的“共享盘”（原来的现场资料）和工作站入口。内容变了（解开谜题、拿到凭证）就自己重画。
+export function terminalBody(placeId) {
   const place = places[placeId];
-  return JSON.stringify([
-    place.hotspots.filter(visible).map((hs) => [hs.id, isDone(hs)]),
-    S.get().items.map((i) => i.id),
-  ]);
+  const root = h('div', { class: 'term-page' });
+  let sig = '', attached = false;
+  const render = () => {
+    sig = signature(place);
+    const list = place.hotspots.filter(visible);
+    root.replaceChildren(h('div', { class: 'hotspots' }, list.map((hs) => hotspotButton(place, hs, render))));
+  };
+  render();
+  const off = on('state', () => {
+    if (root.isConnected) attached = true;
+    else if (attached) return off();
+    if (attached && signature(place) !== sig) render();
+  });
+  return root;
 }
+
+// 哪些热点现在可见、哪些谜题已解开、有哪些凭证：变了才重画
+const signature = (place) => JSON.stringify([
+  place.hotspots.filter(visible).map((hs) => [hs.id, isDone(hs)]),
+  S.get().items.map((i) => i.id),
+]);
 
 // 热点何时显示：showWhen 满足、且 hideWhen 不满足
 const visible = (hs) => meets(hs.showWhen) && !(hs.hideWhen && meets(hs.hideWhen));
