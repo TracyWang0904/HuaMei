@@ -108,8 +108,8 @@ input:focus, textarea:focus { outline: none; }
 .start-menu li button:hover, .start-menu li button:focus-visible { background: var(--navy); color: #fff; outline: none; }
 
 /* —— 鼠标：千禧年像素光标。热点在箭头尖 / 手指尖 —— */
-html, body, #app, .modal-overlay, .win98, .btn, input, textarea, .titlebar, .rdesk, .fwin { cursor: url("/assets/img/ui/cursor-arrow.png") 0 0, default; }
-button, .word, .dicon, .tb-btn, .entry-list button, .start-menu li button, label, .ficon-btn, .ftask-btn, .btab, .tlink, .cthread, .fclose { cursor: url("/assets/img/ui/cursor-hand.png") 9 0, pointer; }
+html, body, #app, .modal-overlay, .win98, .btn, input, textarea, .titlebar { cursor: url("/assets/img/ui/cursor-arrow.png") 0 0, default; }
+button, .word, .dicon, .tb-btn, .entry-list button, .start-menu li button, label, .btab, .tlink, .cthread { cursor: url("/assets/img/ui/cursor-hand.png") 9 0, pointer; }
 input[type=text], textarea { cursor: text; }
 
 /* —— 排序谜题 / 条目按钮 —— */
@@ -157,23 +157,38 @@ input[type=text], textarea { cursor: text; }
 .empty { color: var(--sh); margin: 4px 0; }
 
 /* —— 记者的电脑：现代扁平风，和基地内网的千禧年风格形成对比 —— */
-.rdesk { position: absolute; inset: 0 0 44px 0; background: linear-gradient(160deg, #e8eef6 0%, #cfdbea 55%, #b9c9de 100%); font-family: system-ui, "PingFang SC", "Noto Sans SC", sans-serif; }
-.ficons { position: absolute; top: 16px; left: 16px; display: flex; flex-direction: column; gap: 14px; }
-.ficon-btn { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; width: 84px; padding: 6px 2px; background: none; border: 0; border-radius: 10px; color: #1f2a37; font: 13px/1.2 system-ui, "PingFang SC", sans-serif; }
-.ficon-btn:hover { background: rgba(255,255,255,.55); }
+.rdesk { position: absolute; inset: 0; background: #1d2a1c url("/assets/img/reporter-wallpaper.jpg") center / cover no-repeat; font-family: system-ui, -apple-system, "PingFang SC", "Noto Sans SC", sans-serif; }
 .ficon { display: inline-flex; }
-.badge { position: absolute; top: 2px; right: 14px; width: 11px; height: 11px; border-radius: 50%; background: #ef4444; border: 2px solid #fff; }
-.ftask-btn .badge { top: 3px; right: 4px; width: 9px; height: 9px; }
+.ficon img { display: block; filter: drop-shadow(0 3px 5px rgba(0,0,0,.35)); }
+.badge { position: absolute; top: 0; right: 2px; width: 14px; height: 14px; border-radius: 50%; background: #ff3b30; border: 2px solid rgba(255,255,255,.9); }
 .badge[hidden] { display: none; }
-.ftask { position: fixed; left: 0; right: 0; bottom: 0; height: 44px; z-index: 150; display: flex; align-items: center; gap: 4px; padding: 0 10px; background: rgba(250,252,255,.92); border-top: 1px solid #c3cfdd; font: 13px system-ui, "PingFang SC", sans-serif; color: #1f2a37; }
-.ftask-btn { position: relative; display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: none; border: 0; border-radius: 8px; font: inherit; color: inherit; }
-.ftask-btn:hover { background: rgba(0,0,0,.06); }
-.fclock { padding: 0 6px; color: #475569; }
-.fwin { position: fixed; background: #fff; border-radius: 10px; box-shadow: 0 10px 40px rgba(15,23,42,.28), 0 0 0 1px rgba(15,23,42,.1); overflow: hidden; display: flex; flex-direction: column; max-height: calc(100% - 70px); font: 14px/1.6 system-ui, "PingFang SC", "Noto Sans SC", sans-serif; color: #1f2a37; }
-.fbar { display: flex; align-items: center; gap: 8px; height: 34px; padding: 0 8px 0 14px; background: #f1f5f9; border-bottom: 1px solid #dbe3ec; font-weight: 600; user-select: none; }
-.fbar .title { flex: 1; }
-.fclose { width: 26px; height: 26px; border: 0; border-radius: 6px; background: none; font-size: 18px; line-height: 1; color: #475569; }
-.fclose:hover { background: #e2e8f0; }
+/* 顶部菜单栏 */
+.menubar { position: fixed; left: 0; right: 0; top: 0; height: 28px; z-index: 150; display: flex; align-items: center; gap: 18px; padding: 0 16px; background: rgba(30,32,30,.38); backdrop-filter: blur(24px) saturate(1.6); -webkit-backdrop-filter: blur(24px) saturate(1.6); color: #fff; font: 13px system-ui, -apple-system, "PingFang SC", sans-serif; text-shadow: 0 1px 2px rgba(0,0,0,.25); user-select: none; }
+.mb-app { font-weight: 700; }
+.fclock { font-variant-numeric: tabular-nums; }
+/* 底部 Dock */
+.dock { position: fixed; left: 50%; bottom: 10px; transform: translateX(-50%); z-index: 150; display: flex; align-items: flex-end; gap: 10px; padding: 8px 12px 10px; border-radius: 24px; background: rgba(255,255,255,.22); backdrop-filter: blur(28px) saturate(1.6); -webkit-backdrop-filter: blur(28px) saturate(1.6); box-shadow: 0 8px 30px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.35); }
+.dock-btn { position: relative; display: flex; flex-direction: column; align-items: center; padding: 0 0 8px; background: none; border: 0; transform-origin: 50% 100%; transition: transform .14s ease; }
+.dock-btn:hover { transform: scale(1.45) translateY(-4px); }
+.dock-btn:has(+ .dock-btn:hover), .dock-btn:hover + .dock-btn { transform: scale(1.2) translateY(-2px); }
+.dock-tip { position: absolute; bottom: 100%; margin-bottom: 4px; padding: 2px 10px; border-radius: 8px; background: rgba(40,40,40,.85); color: #fff; font: 12px system-ui, "PingFang SC", sans-serif; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .12s; }
+.dock-btn:hover .dock-tip { opacity: 1; }
+.dock-dot { position: absolute; bottom: 1px; width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,.9); opacity: 0; }
+.dock-btn.running .dock-dot { opacity: 1; }
+.dock-btn .badge { top: 0; right: 0; }
+/* 窗口 */
+.fwin { position: fixed; background: rgba(255,255,255,.97); border-radius: 12px; box-shadow: 0 22px 60px rgba(0,0,0,.45), 0 0 0 1px rgba(0,0,0,.22); overflow: hidden; display: flex; flex-direction: column; max-height: calc(100% - 140px); font: 14px/1.6 system-ui, -apple-system, "PingFang SC", "Noto Sans SC", sans-serif; color: #1f2a37; }
+.fbar { position: relative; display: flex; align-items: center; justify-content: center; height: 38px; padding: 0 14px; background: linear-gradient(#f3f3f4, #e6e6e8); border-bottom: 1px solid #d0d0d4; font-weight: 600; font-size: 13px; color: #3c3c43; user-select: none; }
+.fbar .title { pointer-events: none; }
+.lights { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); display: flex; gap: 8px; }
+.fclose, .fmin, .fmax { display: block; width: 12px; height: 12px; padding: 0; border: 0; border-radius: 50%; box-shadow: inset 0 0 0 .5px rgba(0,0,0,.2); }
+.fclose { background: #ff5f57; }
+.fmin { background: #febc2e; }
+.fmax { background: #28c840; }
+.fclose:hover { background: #ff3b30; }
+/* 记者的电脑用系统默认光标，只有基地内网用像素光标 */
+.rdesk, .menubar, .dock, .fwin { cursor: default; }
+.dock button, .fwin button, .fwin .word, .fwin .tlink, .fwin .btab, .fwin .cthread { cursor: pointer; }
 .fbody { overflow: auto; min-height: 0; }
 .fwin .word { color: #2563eb; border-bottom: 1px dashed #2563eb; }
 .fwin .word.collected { color: #7c3aed; border-bottom: 1px solid #7c3aed; }
@@ -206,7 +221,7 @@ input[type=text], textarea { cursor: text; }
 .replies li { padding: 8px 0; }
 
 /* —— 内网全屏：盖住记者的桌面 —— */
-body.in-intranet .rdesk, body.in-intranet .ftask, body.in-intranet .fwin { display: none; }
+body.in-intranet .rdesk, body.in-intranet .menubar, body.in-intranet .dock, body.in-intranet .fwin { display: none; }
 body:not(.in-intranet) .xwin { display: none; }
 .intranet { position: fixed; inset: 0; z-index: 15; display: flex; flex-direction: column; }
 .intranet.login { background: #000; color: #2cff5a; }

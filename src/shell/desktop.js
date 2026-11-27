@@ -12,7 +12,7 @@ import { openChat, chatUnread } from './chat.js';
 import { openNotebook } from '../notebook/notebook-ui.js';
 import { openSavePanel } from '../ui/save-panel.js';
 
-// 记者的电脑桌面（现代扁平风）：四个应用——浏览器、聊天、笔记本、设置
+// 记者的电脑桌面（macOS 风格）：顶部菜单栏 + 底部 Dock，四个应用——浏览器、聊天、笔记本、设置
 export function startDesktop(app) {
   const apps = [
     { id: 'browser', icon: 'browser', run: openBrowser },
@@ -20,18 +20,23 @@ export function startDesktop(app) {
     { id: 'notebook', icon: 'notebook', run: openNotebook },
     { id: 'settings', icon: 'settings', run: () => openSavePanel(() => location.reload()) },
   ];
-  const badge = () => h('i', { class: 'badge', hidden: !chatUnread() });
   const badges = [];
-  const button = (a, cls) => {
-    const b = h('button', { type: 'button', class: cls, onclick: () => a.run() }, flatIcon(a.icon, cls === 'ficon-btn' ? 48 : 22), h('span', {}, t(`shell.app.${a.id}`)));
-    if (a.id === 'chat') { const d = badge(); badges.push(d); b.append(d); }
+  const front = h('b', { class: 'mb-app' }, t('shell.mac.finder'));
+  const dock = h('div', { class: 'dock' }, apps.map((a) => {
+    const b = h('button', { type: 'button', class: 'dock-btn', 'data-app': a.id, 'aria-label': t(`shell.app.${a.id}`), onclick: () => { front.textContent = t(`shell.app.${a.id}`); a.run(); } },
+      flatIcon(a.icon, 56), h('span', { class: 'dock-tip' }, t(`shell.app.${a.id}`)), h('i', { class: 'dock-dot' }));
+    if (a.id === 'chat') { const d = h('i', { class: 'badge', hidden: !chatUnread() }); badges.push(d); b.append(d); }
     return b;
-  };
+  }));
+  // 开着窗口的应用，图标下面亮一个小点
+  const refreshDots = () => dock.querySelectorAll('.dock-btn').forEach((b) => b.classList.toggle('running', !!document.querySelector(`.fwin[data-wid="${b.dataset.app}"]`)));
+  new MutationObserver(refreshDots).observe(document.body, { childList: true });
+
   const clock = h('span', { class: 'fclock' });
   const tick = () => { clock.textContent = nowString(); };
   tick(); setInterval(tick, 5000);
-  const taskbar = h('div', { class: 'ftask' }, apps.map((a) => button(a, 'ftask-btn')), h('span', { class: 'sp' }), clock);
-  app.append(h('div', { class: 'rdesk' }, h('div', { class: 'ficons' }, apps.map((a) => button(a, 'ficon-btn')))), taskbar);
+  const menubar = h('div', { class: 'menubar' }, front, ['file', 'edit', 'view', 'window', 'help'].map((k) => h('span', { class: 'mb-item' }, t(`shell.mac.${k}`))), h('span', { class: 'sp' }), clock);
+  app.append(h('div', { class: 'rdesk' }), menubar, dock);
   on('state', () => badges.forEach((b) => { b.hidden = !chatUnread(); }));
 
   watchPost();
