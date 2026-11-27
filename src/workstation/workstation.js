@@ -49,7 +49,11 @@ export function openWorkstation(computerId) {
       h('div', { class: 'win-content' },
         comp.owner ? h('p', {}, t('ws.owner', { name: comp.owner })) : null,
         puzzlePanel(comp.login, { onSolved: () => { applyEffects([{ login: comp.id }]); setTimeout(render, 500); } })));
-    return h('div', { class: 'desktop' }, h('div', { class: 'center-fill' }, dlg));
+    // 锁屏壁纸：原来摆在桌上的相框、明信片，现在是锁屏壁纸（图片说明文字里有可收录的词）
+    const wall = comp.lockscreen
+      ? h('div', { class: 'lockwall' }, comp.lockscreen.title ? h('h3', {}, comp.lockscreen.title) : null, richText(comp.lockscreen.text, { source: comp.lockscreen.source }))
+      : null;
+    return h('div', { class: 'desktop' }, h('div', { class: 'center-fill' }, wall, dlg));
   }
 
   function desktopView() {

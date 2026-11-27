@@ -222,3 +222,7 @@ body:not(.in-intranet) .xwin { display: none; }
 .intranet.login .ibar .btn { background: #000; color: #2cff5a; box-shadow: none; border: 1px solid #2cff5a; }
 .intranet.login .ibar { background: #000; box-shadow: none; border-top: 1px solid #2cff5a; }
 .intranet.login .ibar .tray { box-shadow: none; color: #2cff5a; }
+
+.lockwall { margin-bottom: 10px; padding: 6px 10px; background: rgba(0,0,0,.55); color: #fff; box-shadow: var(--field); white-space: pre-wrap; max-width: 90%; }
+.lockwall h3 { margin: 0 0 4px; font-size: 1em; }
+.lockwall .word { color: #9fd0ff; }

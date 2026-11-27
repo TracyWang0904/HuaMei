@@ -23,7 +23,7 @@ export function startDesktop(app) {
   const badge = () => h('i', { class: 'badge', hidden: !chatUnread() });
   const badges = [];
   const button = (a, cls) => {
-    const b = h('button', { type: 'button', class: cls, onclick: a.run }, flatIcon(a.icon, cls === 'ficon-btn' ? 48 : 22), h('span', {}, t(`shell.app.${a.id}`)));
+    const b = h('button', { type: 'button', class: cls, onclick: () => a.run() }, flatIcon(a.icon, cls === 'ficon-btn' ? 48 : 22), h('span', {}, t(`shell.app.${a.id}`)));
     if (a.id === 'chat') { const d = badge(); badges.push(d); b.append(d); }
     return b;
   };

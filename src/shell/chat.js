@@ -8,8 +8,8 @@ import { shell } from '../core/data.js';
 
 export const chatUnread = () => !S.get().flags.includes('chat-read');
 
-export function openChat() {
-  let cur = shell.chat.threads[0].id;
+export function openChat(thread) {
+  let cur = typeof thread === 'string' ? thread : shell.chat.threads[0].id;
   const list = h('div', { class: 'clist' });
   const msgs = h('div', { class: 'cmsgs' });
   const render = () => {
