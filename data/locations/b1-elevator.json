@@ -1,21 +1,48 @@
 {
   "id": "b1-elevator",
   "name": "电梯厅",
-  "intro": "B1 的电梯厅。",
+  "intro": "B1 电梯厅终端。",
   "hotspots": [
     {
-      "type": "goto",
+      "type": "puzzle",
       "id": "to-b2",
-      "label": "电梯面板（B2）",
-      "requiresItem": {
-        "id": "jq-card-old",
-        "message": "请刷卡。"
-      },
-      "effects": [
-        {
-          "goto": "ch5-lab"
-        }
-      ]
+      "label": "实验区访问（B2）",
+      "solvedLabel": "实验区访问（已接入）",
+      "terminal": true,
+      "puzzle": {
+        "id": "ch5.access",
+        "fields": [
+          {
+            "key": "account",
+            "label": "工号",
+            "maxLength": 8,
+            "numeric": false,
+            "answerHash": "34297a3b0154c4e3dd718082eb52aa905e6ab4d6dbcf462bef9e9a238de78e3f"
+          },
+          {
+            "key": "pass",
+            "label": "密码",
+            "maxLength": 8,
+            "numeric": false,
+            "answerHash": "b4c148e223be470d62bc68a1980d4eb79b9aad039421a426b5d6a62375453107"
+          }
+        ],
+        "hints": [
+          "季卿的旧卡没有注销。",
+          "工号和初始密码规则，有人写在备忘录里。"
+        ],
+        "onSolve": [
+          {
+            "giveItem": {
+              "id": "jq-access",
+              "name": "季卿旧卡的访问密码：JQ0909"
+            }
+          },
+          {
+            "goto": "ch5-lab"
+          }
+        ]
+      }
     }
   ]
 }

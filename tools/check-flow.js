@@ -25,6 +25,15 @@ const apply = (effects = []) => {
 };
 const solve = (pz) => { if (pz && !st.solved.has(pz.id)) { add(st.solved, pz.id); apply(pz.onSolve); } };
 
+// 选择：每个选项都走一遍，选项里嵌套的 confirm（“是否前往”）也走
+function chooseAll(hs) {
+  for (const o of hs.options) {
+    if (!meets(o.showWhen)) continue;
+    apply(o.effects);
+    if (o.confirm) chooseAll(o.confirm);
+  }
+}
+
 function useComputer(id) {
   const c = computers[id];
   if (c.login) { solve(c.login); apply([{ login: id }]); }
@@ -45,7 +54,7 @@ function visit(place) {
     else if (hs.type === 'computer') useComputer(hs.computer);
     else if (hs.type === 'goto') apply(hs.effects);
     else if (hs.type === 'puzzle') solve(hs.puzzle);
-    else if (hs.type === 'choice') for (const o of hs.options) if (meets(o.showWhen)) apply(o.effects);
+    else if (hs.type === 'choice') chooseAll(hs);
   }
 }
 
@@ -58,7 +67,7 @@ const all = map.floors.flatMap((f) => f.places);
 for (const p of all) check(st.unlocked.has(p.id), `地点走不到：${p.id}`);
 for (const id of Object.keys(computers)) check(!computers[id].login || st.loggedIn.has(id), `电脑登录不了：${id}`);
 for (const k of Object.keys(endings)) check(st.endings.has(k), `结局触发不了：${k}`);
-for (const id of ['jq-card-old', 'commander-card', 'recorder']) check(st.items.has(id), `道具拿不到：${id}`);
+for (const id of ['jq-access', 'commander-pass', 'recorder']) check(st.items.has(id), `道具拿不到：${id}`);
 
 // 引用的 id 必须存在
 const walk = (v, f) => { f(v); if (Array.isArray(v)) v.forEach((x) => walk(x, f)); else if (v && typeof v === 'object') Object.values(v).forEach((x) => walk(x, f)); };

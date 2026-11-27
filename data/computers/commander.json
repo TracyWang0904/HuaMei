@@ -102,12 +102,12 @@
               "effects": [
                 {
                   "giveItem": {
-                    "id": "commander-card",
-                    "name": "司令员门禁卡"
+                    "id": "commander-pass",
+                    "name": "司令员通行码：BN0002"
                   }
                 }
               ],
-              "doneText": "抽屉里有一张司令员门禁卡：可用电梯 B1、B2。"
+              "doneText": "通行码：BN0002（可用于电梯接入 B1、B2）。"
             }
           ]
         }
@@ -131,5 +131,10 @@
     {
       "shared": "weather-live"
     }
-  ]
+  ],
+  "lockscreen": {
+    "title": "锁屏壁纸",
+    "source": "锁屏壁纸",
+    "text": "照片：一个穿军装的年轻人站在雪地里，笑得很腼腆。\n水印：[[小舟]]  JT089.03.02 — [[JT110.11.27]]  息岭北口"
+  }
 }

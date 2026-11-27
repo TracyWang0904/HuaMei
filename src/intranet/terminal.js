@@ -79,14 +79,18 @@ function activate(place, hs, rerender) {
   }
 }
 
-// 选择：一句话 + 若干选项，每个选项有一组效果
+// 选择：一句话 + 若干选项，每个选项有一组效果；选项可以带 confirm（再弹一个选择，例如“是否前往”）
 function openChoice(hs, rerender) {
   const m = openModal({
     title: hs.label, className: 'msgbox',
     body: [h('div', { class: 'msg-row' }, h('p', {}, hs.text ?? '')),
       h('div', { class: 'btn-row center' }, hs.options.filter((o) => meets(o.showWhen)).map((o) => h('button', {
         type: 'button', class: 'btn',
-        onclick: () => { m.close(); applyEffects(o.effects); rerender(); },
+        onclick: () => {
+          m.close();
+          if (o.confirm) return openChoice({ label: hs.label, ...o.confirm }, rerender);
+          applyEffects(o.effects); rerender();
+        },
       }, o.label)))],
   });
 }
