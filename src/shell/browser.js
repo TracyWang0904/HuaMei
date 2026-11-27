@@ -54,7 +54,7 @@ export function openBrowser() {
   const forumPage = () => h('div', {},
     h('h2', {}, shell.forum.site),
     h('ul', { class: 'threads' }, shell.forum.threads.filter((x) => !(x.key && gone())).map((x) => h('li', {},
-      h('button', { type: 'button', class: 'tlink', onclick: () => { thread = x.id; render(); } }, x.title),
+      x.key ? h('button', { type: 'button', class: 'tlink', onclick: () => { thread = x.id; render(); } }, x.title) : h('span', {}, x.title),
       h('span', { class: 'meta' }, `${x.author} · ${x.replies}`)))));
 
   const threadPage = () => {
