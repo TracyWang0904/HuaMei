@@ -14,10 +14,15 @@ export function openWindow({ id, title, body, kind = 'win98', className = '', wi
   if (old?.el.isConnected) { bringToFront(old.el); return old; }
 
   const close = () => { el.remove(); open.delete(id); onClose?.(); };
-  const x = h('button', { type: 'button', class: kind === 'flat' ? 'fclose' : 'tb-btn', 'aria-label': t('common.close'), onclick: close }, '×');
-  const bar = h('div', { class: kind === 'flat' ? 'fbar' : 'titlebar' }, h('span', { class: 'title' }, title), x);
+  const flat = kind === 'flat';
+  const x = h('button', { type: 'button', class: flat ? 'fclose' : 'tb-btn', 'aria-label': t('common.close'), onclick: close }, flat ? '' : '×');
+  // 记者电脑（macOS 风格）：左上角红黄绿三个圆点，黄、绿只是装饰
+  const bar = flat
+    ? h('div', { class: 'fbar' }, h('span', { class: 'lights' }, x, h('i', { class: 'fmin' }), h('i', { class: 'fmax' })), h('span', { class: 'title' }, title))
+    : h('div', { class: 'titlebar' }, h('span', { class: 'title' }, title), x);
   const el = h('div', { class: `${kind === 'flat' ? 'fwin' : 'win98 xwin'} ${className}`, role: 'dialog', 'aria-label': title },
     bar, h('div', { class: kind === 'flat' ? 'fbody' : 'xbody' }, body));
+  if (flat && id) el.dataset.wid = id;
   const n = open.size % 6;
   el.style.width = `min(${width}px, calc(100% - 24px))`;
   el.style.left = `${130 + n * 28}px`;
