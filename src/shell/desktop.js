@@ -37,14 +37,16 @@ export function startDesktop(app) {
   watchPost();
 }
 
+const keyThread = () => shell.forum.threads.find((x) => x.key);
+
 // 三个词都收录进笔记本之后，帖子自己消失
 function watchPost() {
   const check = () => {
     const s = S.get();
     if (s.flags.includes('post-gone')) return;
-    if (shell.forum.post.requiredWords.every(hasWord)) setTimeout(() => applyEffects([{ flag: 'post-gone' }]), 1500);
+    if (keyThread().requiredWords.every(hasWord)) setTimeout(() => applyEffects([{ flag: 'post-gone' }]), 1500);
   };
   let armed = false;
-  on('state', () => { if (!armed && !S.get().flags.includes('post-gone') && shell.forum.post.requiredWords.every(hasWord)) { armed = true; check(); } });
+  on('state', () => { if (!armed && !S.get().flags.includes('post-gone') && keyThread().requiredWords.every(hasWord)) { armed = true; check(); } });
   check();
 }

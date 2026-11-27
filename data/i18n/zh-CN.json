@@ -46,5 +46,11 @@
   "shell.portal.title": "BN内网门户",
   "shell.connecting": "正在接入 {name} 终端……",
   "shell.term.title": "终端 - {name}",
-  "notebook.open": "打开"
+  "shell.addr.go": "前往",
+  "shell.addr.err": "无法访问此网站",
+  "shell.addr.err2": "请检查网址是否输入正确：{url}",
+  "shell.addr.ph": "输入网址",
+  "shell.intranet.leave": "断开连接",
+  "shell.intranet.nb": "笔记本",
+  "shell.intranet.hint": "BN内网"
 }

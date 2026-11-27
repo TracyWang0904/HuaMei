@@ -2,12 +2,13 @@
   "news": {
     "site": "舟城新闻网",
     "headline": "《[[息岭山脉封禁公约]]》附件今日解密：封存七十一年的“能源灾变”结论首次公开",
-    "body": "公约附件今日按期解禁。官方结论维持原样：JT116 年息岭 BN 基地发生[[能源事故]]，全体人员遇难。\n附件仅含五国签字页与禁区范围示意图，示意图为空白。山下牧民至今流传：每到夜里，山上有[[一盏灯一直亮着]]。",
+    "body": "公约附件今日按期解禁。官方结论维持原样：JT116 年息岭 BN 基地发生[[能源事故]]，全体人员遇难。\n附件仅含五国签字页与禁区范围示意图，示意图为空白。\n有关部门表示，事故已过去七十一年，禁区外围环境监测一切正常，周边居民不必担心，请勿轻信、传播不实信息。对山下牧民中流传的“夜里山上[[一盏灯一直亮着]]”一说，有关部门称系以讹传讹。",
     "others": [
       "禾芯半导体发布第十代民用芯片　创始人陈窈铜像在舟城园区落成",
       "气象台：今年息岭外围降雪提前　提醒户外爱好者切勿靠近封锁线",
       "【推荐阅读】七十年前的“能源灾变”，还有多少没说清？"
-    ]
+    ],
+    "url": "news.zhoucheng.example"
   },
   "chat": {
     "threads": [
@@ -15,55 +16,152 @@
         "id": "group",
         "name": "舟城新闻人·别催稿了",
         "messages": [
-          { "from": "老周", "text": "家人们，封了七十一年的条约今天解密了！" },
-          { "from": "小米", "text": "全文五页，我翻了三遍，除了签字什么都没有。" },
-          { "from": "阿凯", "text": "官方还是那句话，“能源事故”。说了跟没说一样。" },
-          { "from": "老周", "text": "藏得真好。七十多年，一点风声没漏过。" },
-          { "from": "小米", "text": "@你 你不是说过息岭那个选题有门道吗？" },
-          { "from": "阿凯", "text": "你上一篇爆款是什么时候来着（狗头）" },
-          { "from": "小米", "text": "对了，论坛上有人在聊这个，你去看看。" },
-          { "from": "老周", "text": "诶，那个帖子怎么没了？谁截图了？", "showWhen": { "flag": "post-gone" } }
+          {
+            "from": "老周",
+            "text": "家人们，封了七十一年的条约今天解密了！"
+          },
+          {
+            "from": "小米",
+            "text": "666翻了三遍，除了签字啥都没有"
+          },
+          {
+            "from": "阿凯",
+            "text": "“能源事故”，说了跟没说一样。"
+          },
+          {
+            "from": "老周",
+            "text": "藏得真好啊，七十多年，一点风声没漏过"
+          },
+          {
+            "from": "小米",
+            "text": "@俺想吃三文鱼 你不是说过息岭那个选题有门道吗？"
+          },
+          {
+            "from": "阿凯",
+            "text": "你上一篇爆款是什么时候来着😂"
+          },
+          {
+            "from": "小米",
+            "text": "对了，论坛上有人在聊这个，你去看看。"
+          },
+          {
+            "from": "老周",
+            "text": "诶，那个帖子怎么没了？谁截图了？",
+            "showWhen": {
+              "flag": "post-gone"
+            }
+          }
         ]
       },
       {
         "id": "editor",
         "name": "主编",
         "messages": [
-          { "from": "主编", "text": "这个月阅读量 KPI 完成 11%。周五前给我一个能打的选题。" }
+          {
+            "from": "主编",
+            "text": "这个月阅读量KPI完成才11%，你周五前给我一个能打的选题"
+          }
         ]
       }
     ]
   },
   "forum": {
     "site": "舟城夜话",
+    "url": "bbs.zhoucheng.example",
     "threads": [
-      { "id": "t1", "title": "条约附件解密，大家怎么看", "author": "路过的猫", "replies": 212 },
-      { "id": "t2", "title": "息岭到底有什么？有懂的吗", "author": "不吃香菜", "replies": 87 },
-      { "id": "huanhua", "title": "息岭那盏灯，你们有没有想过当年的内网长什么样？", "author": "浣花溪上", "replies": 9, "key": true }
-    ],
-    "post": {
-      "title": "息岭那盏灯，你们有没有想过当年的内网长什么样？",
-      "author": "浣花溪上",
-      "time": "[TODO: 发帖时间]",
-      "text": "都在聊条约，没人聊聊那座基地本身。\n当年的 BN 内网，我有一个入口。\n链接：[[TODO-LINK]]\n账号：[[TODO-ACCOUNT]]\n密码：[[TODO-PASSWORD]]\n别外传。浣花溪上见卿卿。",
-      "replies": [
-        { "floor": 3, "text": "楼主文青病犯了？" },
-        { "floor": 5, "text": "我点了，打不开，骗子。" },
-        { "floor": 8, "text": "这个 ID 我没见过，新号？" }
-      ],
-      "requiredWords": ["TODO-LINK", "TODO-ACCOUNT", "TODO-PASSWORD"],
-      "gone": "该帖子已被删除，或你没有权限访问。"
-    }
+      {
+        "id": "t1",
+        "title": "条约附件解密，大家怎么看",
+        "author": "路过的猫",
+        "replies": 212
+      },
+      {
+        "id": "t2",
+        "title": "息岭到底有什么？有懂的吗",
+        "author": "不吃香菜",
+        "replies": 87,
+        "key": true,
+        "time": "[TODO: 发帖时间]",
+        "text": "条约附件放出来了，除了签字什么都没有。当年那座基地到底是干什么的？有没有知道点内情的？",
+        "posts": [
+          {
+            "floor": 2,
+            "author": "路过的猫",
+            "text": "能源事故呗，官方不是说了吗"
+          },
+          {
+            "floor": 3,
+            "author": "老李头",
+            "text": "我爷爷那辈说过，山上那几年夜里老有动静"
+          },
+          {
+            "floor": 4,
+            "author": "不吃香菜",
+            "text": "@老李头 具体点？什么动静"
+          },
+          {
+            "floor": 5,
+            "author": "浣花溪上",
+            "text": "大家怎么都在聊条约啊，没人想知道那座基地的事吗？\n我朋友是当兵的，他发了我一个当年的BN内网的链接和账密，别外传\n链接：[[TODO-LINK]]\n账号：[[TODO-ACCOUNT]]\n密码：[[TODO-PASSWORD]]"
+          },
+          {
+            "floor": 6,
+            "author": "路过的猫",
+            "text": "我点了，打不开，骗子。"
+          },
+          {
+            "floor": 7,
+            "author": "阿福",
+            "text": "楼上，你是不是没挂梯子"
+          },
+          {
+            "floor": 8,
+            "author": "小橘子",
+            "text": "这个ID我没见过，新号？"
+          },
+          {
+            "floor": 9,
+            "author": "老李头",
+            "text": "别信，现在骗子都这么发"
+          },
+          {
+            "floor": 10,
+            "author": "夜班护士",
+            "text": "蹲一个后续"
+          }
+        ],
+        "requiredWords": [
+          "TODO-LINK",
+          "TODO-ACCOUNT",
+          "TODO-PASSWORD"
+        ],
+        "gone": "该帖子已被删除。"
+      }
+    ]
   },
   "intranet": {
     "linkWord": "TODO-LINK",
     "login": {
       "id": "shell.intranet",
       "fields": [
-        { "key": "account", "label": "账号", "maxLength": 32, "answerHash": "7dabda1b8ae4d2eb595a6a2e9e810cda7df521456b979de44ca943807c270641" },
-        { "key": "password", "label": "密码", "maxLength": 32, "answerHash": "80182441d1232d4e4cd859aa0a06f17a9ed4bdf3660c0482f8ef6689425e4b23" }
+        {
+          "key": "account",
+          "label": "账号",
+          "maxLength": 32,
+          "answerHash": "7dabda1b8ae4d2eb595a6a2e9e810cda7df521456b979de44ca943807c270641"
+        },
+        {
+          "key": "password",
+          "label": "密码",
+          "maxLength": 32,
+          "answerHash": "80182441d1232d4e4cd859aa0a06f17a9ed4bdf3660c0482f8ef6689425e4b23"
+        }
       ],
-      "onSolve": [{ "flag": "intranet-open" }]
+      "onSolve": [
+        {
+          "flag": "intranet-open"
+        }
+      ]
     }
   }
 }
