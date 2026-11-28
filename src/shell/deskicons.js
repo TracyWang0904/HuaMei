@@ -15,7 +15,7 @@ export const GLYPH = {
   cloudmoon: '<path d="M21 5a6 6 0 1 0 5 9 5 5 0 0 1-5-9z" fill="#e8ecf6"/><path d="M8 26a5 5 0 0 1 1-10 7 7 0 0 1 13 1 4 4 0 0 1-1 9z" fill="#c9d0e6"/>',
   laptop: '<rect x="6" y="7" width="22" height="15" rx="2" fill="none" stroke="#fff" stroke-width="2.4"/><path d="M2.5 26.5h29" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>',
   buds: '<g transform="translate(-3 -1)"><path d="M12 10a4 4 0 0 1 4 4v10a2 2 0 0 1-4 0v-3a4 4 0 0 1-4-4v-3a4 4 0 0 1 4-4zM28 10a4 4 0 0 0-4 4v10a2 2 0 0 0 4 0v-3a4 4 0 0 0 4-4v-3a4 4 0 0 0-4-4z" fill="#fff"/></g>',
-  phone: '<rect x="9.5" y="4.5" width="15" height="25" rx="4" fill="none" stroke="#fff" stroke-width="2.4"/><path d="M15 25.5h4" stroke="#fff" stroke-width="2" stroke-linecap="round"/>',
+  phone: '<rect x="9.5" y="4.5" width="15" height="25" rx="4" fill="none" stroke="#fff" stroke-width="2.4"/><path d="M15 8.5h4" stroke="#fff" stroke-width="2" stroke-linecap="round"/>',
 };
 export const glyph = (name, size = 28, vb = 34) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${vb} ${vb}" width="${size}" height="${size}">${GLYPH[name] ?? ''}</svg>`;
 
