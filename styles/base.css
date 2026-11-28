@@ -211,9 +211,10 @@ input[type=text], textarea { cursor: text; }
 .w-ev span { opacity: .75; font-size: 10.5px; }
 .w-free { font-size: 12px; opacity: .75; }
 /* 右侧桌面文件 */
-.dfiles { position: absolute; top: 40px; right: 14px; bottom: 100px; display: flex; flex-flow: column wrap-reverse; align-content: flex-start; gap: 14px 6px; }
-.dfile { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 88px; padding: 4px 2px; background: none; border: 0; border-radius: 8px; color: #fff; font: 12px/1.25 var(--mac-font); text-shadow: 0 1px 3px rgba(0,0,0,.7); cursor: default; }
-.dfile span { max-width: 84px; padding: 1px 5px; border-radius: 5px; word-break: break-all; text-align: center; }
+.dfiles { position: absolute; top: 40px; right: 14px; bottom: 100px; display: grid; direction: rtl; grid-auto-flow: column; grid-auto-columns: 96px; grid-template-rows: repeat(auto-fill, 112px); justify-content: start; }
+.dfile { direction: ltr; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 4px; width: 96px; height: 112px; padding: 4px 2px; box-sizing: border-box; background: none; border: 0; border-radius: 8px; color: #fff; font: 12px/1.25 var(--mac-font); text-shadow: 0 1px 3px rgba(0,0,0,.7); cursor: default; }
+.dfile > svg { flex: none; width: 54px; height: 54px; }
+.dfile span { max-width: 90px; padding: 1px 5px; border-radius: 5px; overflow-wrap: anywhere; text-align: center; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .dfile.sel span { background: #0a64d8; text-shadow: none; }
 .dfile.sel svg { filter: drop-shadow(0 0 0 rgba(0,0,0,0)) brightness(.9); }
 /* 窗口：macOS 深色外观 */
