@@ -7,6 +7,7 @@ import { shell } from '../core/data.js';
 import { enterIntranet } from './intranet.js';
 
 const norm = (u) => u.trim().toLowerCase().replace(/^[a-z]+:\/\//, '').replace(/\/+$/, '');
+const who = (name) => h('span', { class: 'who' }, name, h('i', { class: 'lv' }, `Lv${shell.forum.levels[name] ?? 1}`));
 const keyThread = () => shell.forum.threads.find((x) => x.key);
 
 // 记者电脑的浏览器：地址栏 + 新闻首页 + 论坛。论坛要先看过聊天才出现（有人在群里提了一句）。
@@ -55,7 +56,7 @@ export function openBrowser() {
     h('h2', {}, shell.forum.site),
     h('ul', { class: 'threads' }, shell.forum.threads.filter((x) => !(x.key && gone())).map((x) => h('li', {},
       x.key ? h('button', { type: 'button', class: 'tlink', onclick: () => { thread = x.id; render(); } }, x.title) : h('span', {}, x.title),
-      h('span', { class: 'meta' }, `${x.author} · ${x.replies}`)))));
+      h('span', { class: 'meta' }, who(x.author), ` · ${x.replies}`)))));
 
   const threadPage = () => {
     const back = h('button', { type: 'button', class: 'tlink', onclick: () => { thread = null; render(); } }, `‹ ${t('shell.back')}`);
@@ -64,14 +65,14 @@ export function openBrowser() {
     if (gone()) return h('div', {}, back, h('p', { class: 'gone' }, th.gone));
     return h('div', {}, back,
       h('h2', {}, th.title),
-      h('p', { class: 'meta' }, `${th.author} · ${th.time}`),
+      h('p', { class: 'meta' }, who(th.author), ` · ${th.time}`),
       h('div', { class: 'ptext' }, richText(th.text, { source: t('shell.src.forum') })),
       h('ul', { class: 'replies' }, th.posts.map((r) => h('li', {},
-        h('div', { class: 'meta' }, `${r.floor} 楼 · ${r.author}`),
+        h('div', { class: 'meta' }, `${r.floor} 楼 · `, who(r.author)),
         h('div', { class: 'ptext' }, richText(r.text, { source: t('shell.src.forum') }))))));
   };
 
-  const w = openWindow({ id: 'browser', title: t('shell.app.browser'), body, kind: 'flat', className: 'browser', width: 640, onClose: () => off() });
+  const w = openWindow({ id: 'browser', title: t('shell.app.browser'), body, kind: 'flat', className: 'browser', width: 700, onClose: () => off() });
   const off = on('state', () => { if (w.el.isConnected) render(); });
   render();
 }

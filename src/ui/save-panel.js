@@ -1,5 +1,5 @@
 import { h } from './dom.js';
-import { openModal } from './modal.js';
+import { openWindow } from './window.js';
 import { t } from '../core/i18n.js';
 import { exportSave, importSave, clear } from '../core/storage.js';
 import * as S from '../core/state.js';
@@ -18,5 +18,5 @@ export function openSavePanel(onChanged) {
       } }, t('save.clear'))),
     box, msg,
   ];
-  openModal({ title: t('nav.settings'), body });
+  openWindow({ id: 'settings', title: t('shell.app.settings'), body: h('div', { class: 'setwin' }, body), kind: 'flat', className: 'setpanel', width: 460 });
 }
